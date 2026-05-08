@@ -20,23 +20,26 @@ export function Layout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-40 bg-bg-secondary/80 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-emerald-500/10 border border-emerald-500/20 bg-slate-950">
+          <div className="flex items-center gap-4">
+            {/* Icon */}
+            <div className="w-12 h-12 rounded-2xl overflow-hidden shadow-2xl shadow-emerald-500/20 border border-emerald-500/30 bg-slate-950 shrink-0">
               <img 
                 src="/Gemini_Generated_Image_58dqsd58dqsd58dq.png" 
-                alt="Grindwise Logo" 
-                className="w-full h-full object-cover"
+                alt="Grindwise Icon" 
+                className="w-full h-full object-cover scale-110"
               />
             </div>
-            <div>
-              <h1 className="h-6 mb-1">
+            
+            {/* Logo Text Image */}
+            <div className="flex flex-col justify-center">
+              <div className="h-10 -ml-2">
                 <img 
                   src="/05956a2f-397f-4557-afbf-656a65068ce8.jpg" 
                   alt="Grindwise" 
-                  className="h-full w-auto object-contain contrast-125 brightness-110"
+                  className="h-full w-auto object-contain mix-blend-screen brightness-125 contrast-110"
                 />
-              </h1>
-              <p className="text-[10px] text-text-muted font-medium tracking-[0.2em] uppercase">MTG Arena • Standard</p>
+              </div>
+              <p className="text-[9px] text-text-muted font-black tracking-[0.25em] uppercase opacity-80">MTG Arena • Standard</p>
             </div>
           </div>
 
