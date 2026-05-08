@@ -94,15 +94,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ─── Preservation Layer (Art Deco / Kaladesh) ───────────────────── */
-@layer components {
-  .deco-card {
-    background: #062c30;
-    border: 1px solid #d4af37;
-    position: relative;
-    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-  }
+/* ─── Preservation Layer (Art Deco / Kaladesh) ───────────────────── */
+@utility deco-card {
+  background: #062c30;
+  border: 1px solid #d4af37;
+  position: relative;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
 
-  .deco-card::before {
+  &::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -111,71 +110,71 @@ h1, h2, h3, h4, h5, h6 {
     pointer-events: none;
     clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
   }
+}
 
-  .deco-title {
-    font-family: var(--font-serif);
-    background: linear-gradient(to bottom, #f1c40f, #d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    text-transform: uppercase;
-  }
+@utility deco-title {
+  font-family: var(--font-serif);
+  background: linear-gradient(to bottom, #f1c40f, #d4af37);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  text-transform: uppercase;
+}
 
-  .deco-button {
-    background: linear-gradient(135deg, #d4af37, #f1c40f);
-    color: #041c1e;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 12px 36px;
-    border: none;
-    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
+@utility deco-button {
+  background: linear-gradient(135deg, #d4af37, #f1c40f);
+  color: #041c1e;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 12px 36px;
+  border: none;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
-  .deco-input {
-    background: rgba(4, 28, 30, 0.8);
-    border: 1px solid #d4af37;
-    color: #e2e8e4;
-    padding: 16px;
-    outline: none;
-    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-  }
+@utility deco-input {
+  background: rgba(4, 28, 30, 0.8);
+  border: 1px solid #d4af37;
+  color: #e2e8e4;
+  padding: 16px;
+  outline: none;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
 
-  /* Legacy aliases for preservation */
-  .brutalist-card { @apply deco-card; }
-  .brutalist-title { @apply deco-title; }
-  .input-field { @apply deco-input; }
-  .btn-primary { @apply deco-button; }
-  .glass-card-glow {
-    background: #0a3a3e;
-    border: 2px solid #d4af37;
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
-    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
-  }
+/* Legacy aliases for preservation */
+@utility brutalist-card { @apply deco-card; }
+@utility brutalist-title { @apply deco-title; }
+@utility input-field { @apply deco-input; }
+@utility btn-primary { @apply deco-button; }
+
+@utility glass-card-glow {
+  background: #0a3a3e;
+  border: 2px solid #d4af37;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+  clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
 }
 
 /* ─── Modern Utility Components ──────────────────────────────────── */
-@layer components {
-  .btn-modern {
-    @apply px-5 py-2.5 rounded-lg font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
-  }
-  
-  .btn-modern-primary {
-    @apply btn-modern bg-emerald-500 text-slate-950 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20;
-  }
-
-  .btn-modern-secondary {
-    @apply btn-modern bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700;
-  }
-
-  .card-modern {
-    @apply bg-slate-900/50 border border-slate-800 rounded-xl backdrop-blur-md overflow-hidden;
-  }
-
-  .input-modern {
-    @apply w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all;
-  }
+@utility btn-modern {
+  @apply px-5 py-2.5 rounded-lg font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
 }
+
+@utility btn-modern-primary {
+  @apply btn-modern bg-emerald-500 text-slate-950 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20;
+}
+
+@utility btn-modern-secondary {
+  @apply btn-modern bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700;
+}
+
+@utility card-modern {
+  @apply bg-slate-900/50 border border-slate-800 rounded-xl backdrop-blur-md overflow-hidden;
+}
+
+@utility input-modern {
+  @apply w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all;
+}
+
 
