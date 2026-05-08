@@ -7,7 +7,7 @@ interface RoadmapTimelineProps {
 export function RoadmapTimeline({ weeks }: RoadmapTimelineProps) {
   if (weeks.length === 0) {
     return (
-      <div className="grimoire-card p-8 text-center border-dashed">
+      <div className="brutalist-card p-8 text-center border-dashed">
         <span className="text-4xl mb-4 block">🎉</span>
         <p className="text-lg font-semibold text-text-primary">¡Ya tienes todo!</p>
         <p className="text-sm text-text-secondary mt-1">No necesitas wildcards adicionales</p>
@@ -24,7 +24,7 @@ export function RoadmapTimeline({ weeks }: RoadmapTimelineProps) {
             <div className={`absolute left-4 w-5 h-5 rounded-full border-2 flex items-center justify-center ${week.isComplete ? 'bg-success border-success shadow-lg shadow-success/30' : 'bg-bg-card border-accent/50'}`}>
               {week.isComplete && <span className="text-white text-xs">✓</span>}
             </div>
-            <div className={`grimoire-card p-5 ${week.isComplete ? 'border-success/30 bg-success/5' : ''}`}>
+            <div className={`brutalist-card p-5 ${week.isComplete ? 'border-success/30 bg-success/5' : ''}`}>
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-sm font-bold text-text-primary">Semana {week.weekNumber}</h4>
                 {week.isComplete && <span className="text-xs font-semibold text-success bg-success/10 px-2 py-0.5 rounded-full">🎯 ¡Meta!</span>}

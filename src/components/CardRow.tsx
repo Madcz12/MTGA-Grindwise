@@ -13,16 +13,16 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
 
   return (
     <div
-      className={`flex items-center gap-4 p-3 border-b border-b-border-subtle transition-all duration-200 group ${
+      className={`flex items-center gap-4 p-3 brutalist-card mb-3 group ${
         isFullyOwned
-          ? 'bg-success/5 border-l-2 border-l-success'
+          ? 'bg-success/10 border-success'
           : isIllegal
-            ? 'bg-error/5 border-l-2 border-l-error'
-            : 'bg-transparent hover:bg-bg-card-hover border-l-2 border-l-transparent hover:border-l-accent'
+            ? 'bg-error/10 border-error'
+            : ''
       }`}
     >
       {/* Card art thumbnail */}
-      <div className="w-16 h-12 border border-border-subtle overflow-hidden bg-bg-secondary flex-shrink-0 relative">
+      <div className="w-16 h-12 border-2 border-border-subtle overflow-hidden bg-bg-primary flex-shrink-0 relative">
         {entry.imageUri ? (
           <img
             src={entry.imageUri}
@@ -69,12 +69,12 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
             <button
               key={i}
               onClick={() => onOwnedChange(i)}
-              className={`w-7 h-7 border text-xs font-serif font-bold transition-all duration-200 ${
+              className={`w-7 h-7 border-2 text-xs font-serif font-bold transition-all duration-100 ${
                 i === copiesOwned
                   ? i === entry.quantity
-                    ? 'border-success text-success bg-success/10'
-                    : 'border-accent text-accent bg-accent/10'
-                  : 'border-border-subtle text-text-muted hover:border-text-muted hover:text-text-primary bg-transparent'
+                    ? 'border-success text-success bg-success/10 shadow-[2px_2px_0px_0px_#00d900]'
+                    : 'border-accent text-accent bg-accent/10 shadow-[2px_2px_0px_0px_#ff2a2a]'
+                  : 'border-border-subtle text-text-muted hover:border-text-primary hover:text-text-primary bg-bg-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'
               }`}
             >
               {i}

@@ -24,13 +24,13 @@ export function BudgetView() {
   return (
     <div className="max-w-5xl mx-auto">
       <div className="text-center mb-12 animate-slide-up">
-        <h2 className="text-4xl editorial-title text-text-primary mb-3">Versión del Mendigo (Budget)</h2>
+        <h2 className="text-4xl brutalist-title text-text-primary mb-3">Versión del Mendigo (Budget)</h2>
         <p className="text-xs uppercase tracking-widest text-text-secondary">Alternativas terrenales para mitigar el costo en comodines</p>
       </div>
 
       {/* Savings highlight */}
-      <div className="grimoire-card-glow p-8 mb-12 text-center animate-slide-up border-b border-b-accent/50">
-        <span className="editorial-number text-6xl text-accent block mb-2">{totalWildcardsSaved}</span>
+      <div className="brutalist-card-glow p-8 mb-12 text-center animate-slide-up border-b border-b-accent/50">
+        <span className="brutalist-number text-6xl text-accent block mb-2">{totalWildcardsSaved}</span>
         <p className="text-xs uppercase tracking-widest text-text-primary font-bold">Tributos Ahorrados</p>
         <p className="text-sm font-serif italic text-text-secondary mt-2">
           Tiempo estimado: <span className="text-accent not-italic font-bold">{formatDuration(budgetRoadmap.totalWeeks)}</span>
@@ -46,7 +46,7 @@ export function BudgetView() {
       <h3 className="text-xs uppercase tracking-widest text-text-primary mb-6 border-b border-border-subtle pb-2 animate-slide-up" style={{ animationDelay: '100ms' }}>Sustituciones Sugeridas</h3>
       <div className="space-y-4 mb-12">
         {substitutions.map((sub, i) => (
-          <div key={i} className="grimoire-card p-4 animate-slide-up" style={{ animationDelay: `${150 + i * 50}ms` }}>
+          <div key={i} className="brutalist-card p-4 animate-slide-up" style={{ animationDelay: `${150 + i * 50}ms` }}>
             <div className="flex flex-col @md:flex-row items-center gap-4">
               {/* Original */}
               <div className="w-full @md:flex-1">
@@ -88,7 +88,7 @@ export function BudgetView() {
       </div>
 
       {/* Disclaimer */}
-      <div className="grimoire-card border-l-2 border-warning p-6 bg-warning/5 mb-12 animate-fade-in relative">
+      <div className="brutalist-card border-l-2 border-warning p-6 bg-warning/5 mb-12 animate-fade-in relative">
         <p className="text-[10px] uppercase tracking-widest text-warning font-bold mb-2">Advertencia del Escriba</p>
         <p className="text-sm font-serif italic text-text-secondary">
           Las sustituciones son orientativas y alterarán la sinergia original del tomo.

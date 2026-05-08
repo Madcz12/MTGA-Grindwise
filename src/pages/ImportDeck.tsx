@@ -99,7 +99,7 @@ export function ImportDeck() {
     <div className="max-w-3xl mx-auto">
       {/* Hero */}
       <div className="text-center mb-12 animate-slide-up">
-        <h2 className="text-5xl editorial-title mb-4">
+        <h2 className="text-5xl brutalist-title mb-4">
           <span className="gold-gradient-text italic">Planifica tus Wildcards</span>
         </h2>
         <p className="text-text-secondary text-lg max-w-xl mx-auto">
@@ -109,7 +109,7 @@ export function ImportDeck() {
       </div>
 
       {/* Import area */}
-      <div className="grimoire-card p-8 mb-8 animate-slide-up" style={{ animationDelay: '100ms' }}>
+      <div className="brutalist-card p-8 mb-8 animate-slide-up" style={{ animationDelay: '100ms' }}>
         <label className="block text-sm uppercase tracking-widest text-text-secondary mb-4">
           Pega tu lista de mazo (Formato MTGA)
         </label>
@@ -167,7 +167,7 @@ export function ImportDeck() {
 
       {/* Errors */}
       {errors.length > 0 && (
-        <div className="grimoire-card border-error p-6 mb-8 bg-error/5 animate-fade-in">
+        <div className="brutalist-card border-error p-6 mb-8 bg-error/5 animate-fade-in">
           <p className="text-xs uppercase tracking-widest text-error mb-4 font-bold">Inscripciones Corruptas Detectadas:</p>
           <ul className="space-y-2">
             {errors.map((err, i) => (
@@ -184,8 +184,8 @@ export function ImportDeck() {
           { title: 'Hoja de Ruta', desc: 'Plan semana a semana basado en oro y track' },
           { title: 'Sustitutos', desc: 'Alternativas más económicas para cartas Míticas/Raras' },
         ].map((f, i) => (
-          <div key={f.title} className="grimoire-card p-6 border-t-2 border-t-border-subtle hover:border-t-accent text-center">
-            <span className="editorial-number text-2xl block mb-3 opacity-50">0{i + 1}</span>
+          <div key={f.title} className="brutalist-card p-6 border-t-2 border-t-border-subtle hover:border-t-accent text-center">
+            <span className="brutalist-number text-2xl block mb-3 opacity-50">0{i + 1}</span>
             <h3 className="text-sm uppercase tracking-widest text-text-primary mb-2 font-medium">{f.title}</h3>
             <p className="text-sm text-text-secondary font-serif italic">{f.desc}</p>
           </div>

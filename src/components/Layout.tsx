@@ -15,22 +15,18 @@ export function Layout({ children }: { children: ReactNode }) {
   const currentIndex = STEPS.findIndex(s => s.screen === currentScreen);
 
   return (
-    <div className="min-h-screen bg-bg-primary bg-grain relative">
-      {/* Background radial overlay */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--color-bg-secondary)_0%,_transparent_70%)] pointer-events-none z-0 opacity-40" />
-
-
+    <div className="min-h-screen relative flex flex-col">
       {/* Header */}
-      <header className="relative z-10 border-b border-border-subtle bg-bg-primary/80 backdrop-blur-md">
+      <header className="relative z-10 border-b-4 border-border-subtle bg-bg-secondary">
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 border border-accent flex items-center justify-center text-xl font-serif text-accent relative before:absolute before:inset-1 before:border before:border-accent/30">
+            <div className="w-12 h-12 border-4 border-border-subtle bg-accent flex items-center justify-center text-2xl font-serif text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               G
             </div>
             <div>
-              <h1 className="text-xl editorial-title tracking-wide uppercase">
-                Grind<span className="font-sans text-text-secondary font-light text-sm ml-1">Wise</span>
+              <h1 className="text-2xl brutalist-title tracking-tight uppercase">
+                Grind<span className="font-sans text-text-muted text-sm ml-1">Wise</span>
               </h1>
               <p className="text-xs text-text-muted font-sans tracking-widest uppercase mt-1">MTG Arena • Standard</p>
             </div>
@@ -47,17 +43,17 @@ export function Layout({ children }: { children: ReactNode }) {
                 <button
                   key={step.screen}
                   onClick={() => isClickable && dispatch({ type: 'SET_SCREEN', screen: step.screen })}
-                  className={`flex items-center gap-2 px-4 py-2 text-sm transition-all duration-300 border-b-2 ${
+                  className={`flex items-center gap-2 px-4 py-2 text-sm transition-all duration-100 border-b-4 ${
                     isActive
-                      ? 'border-accent text-accent font-medium'
+                      ? 'border-accent text-accent font-bold'
                       : isCompleted
-                        ? 'border-transparent text-text-secondary cursor-pointer hover:text-text-primary'
-                        : 'border-transparent text-text-muted cursor-default'
+                        ? 'border-border-subtle text-text-secondary hover:text-text-primary'
+                        : 'border-transparent text-text-muted'
                   }`}
                   disabled={!isClickable && !isActive}
                 >
-                  <span className={isActive ? "editorial-number text-lg" : "font-serif text-lg"}>{isCompleted ? '✓' : index + 1}</span>
-                  <span className="uppercase tracking-wider text-xs">{step.label}</span>
+                  <span className={isActive ? "brutalist-number text-lg" : "font-serif text-lg"}>{isCompleted ? '✓' : index + 1}</span>
+                  <span className="uppercase font-bold tracking-widest text-xs">{step.label}</span>
                 </button>
               );
             })}
@@ -70,7 +66,7 @@ export function Layout({ children }: { children: ReactNode }) {
             {STEPS.map((_, index) => (
               <div
                 key={index}
-                className={`h-[2px] flex-1 transition-all duration-500 ${
+                className={`h-[4px] flex-1 transition-all duration-100 ${
                   index <= currentIndex ? 'bg-accent' : 'bg-border-subtle'
                 }`}
               />
@@ -85,10 +81,10 @@ export function Layout({ children }: { children: ReactNode }) {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-border-subtle mt-auto">
-        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between text-xs text-text-muted tracking-wide uppercase">
+      <footer className="relative z-10 border-t-4 border-border-subtle bg-bg-secondary mt-auto">
+        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between text-xs text-text-primary font-bold tracking-widest uppercase">
           <p>Scryfall API Integration</p>
-          <div className="h-px w-12 bg-border-subtle my-3 md:hidden"></div>
+          <div className="h-1 w-12 bg-border-subtle my-3 md:hidden"></div>
           <p>Not affiliated with Wizards of the Coast</p>
         </div>
       </footer>

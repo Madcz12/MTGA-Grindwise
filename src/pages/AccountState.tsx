@@ -54,12 +54,12 @@ export function AccountState() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-10 animate-slide-up">
-        <h2 className="text-4xl editorial-title text-text-primary mb-3">Tu Estado de Cuenta</h2>
+        <h2 className="text-4xl brutalist-title text-text-primary mb-3">Tu Estado de Cuenta</h2>
         <p className="text-text-secondary uppercase tracking-widest text-xs">Indica qué cartas y wildcards ya tienes para un cálculo preciso</p>
       </div>
 
       {/* Wildcard inventory */}
-      <div className="grimoire-card-glow p-8 mb-8 animate-slide-up" style={{ animationDelay: '100ms' }}>
+      <div className="brutalist-card-glow p-8 mb-8 animate-slide-up" style={{ animationDelay: '100ms' }}>
         <h3 className="text-xs uppercase tracking-widest text-accent mb-6 font-bold">Wildcards Disponibles en el Tomo</h3>
         <div className="grid grid-cols-2 @md:grid-cols-4 gap-6">
           {(['common', 'uncommon', 'rare', 'mythic'] as Rarity[]).map(rarity => {
@@ -85,7 +85,7 @@ export function AccountState() {
       </div>
 
       {/* Gold */}
-      <div className="grimoire-card p-8 mb-8 animate-slide-up" style={{ animationDelay: '150ms' }}>
+      <div className="brutalist-card p-8 mb-8 animate-slide-up" style={{ animationDelay: '150ms' }}>
         <div className="grid grid-cols-1 @md:grid-cols-2 gap-8">
           <div className="w-full">
             <h3 className="text-xs uppercase tracking-widest text-text-primary mb-4">🪙 Oro Actual (opcional)</h3>
@@ -143,7 +143,7 @@ export function AccountState() {
       </div>
 
       {/* Card list */}
-      <div className="grimoire-card p-8 mb-8 animate-slide-up" style={{ animationDelay: '200ms' }}>
+      <div className="brutalist-card p-8 mb-8 animate-slide-up" style={{ animationDelay: '200ms' }}>
         <h3 className="text-xs uppercase tracking-widest text-text-primary mb-6 border-b border-border-subtle pb-2">Contenido del Mazo ({maindeckEntries.length} inscripciones)</h3>
         <div className="space-y-2 max-h-96 overflow-y-auto pr-2">
           {maindeckEntries.map((entry, i) => (

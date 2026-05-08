@@ -43,7 +43,7 @@ export function WildcardCounter({ rarity, needed, have, gap }: WildcardCounterPr
 
   return (
     <div
-      className={`grimoire-card p-6 relative overflow-hidden group`}
+      className={`brutalist-card p-6 relative overflow-hidden group`}
       style={{
         borderColor: isComplete ? 'rgba(34, 197, 94, 0.3)' : `${style.color}30`,
       }}
