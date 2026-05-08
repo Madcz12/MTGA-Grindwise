@@ -21,8 +21,12 @@ export function Layout({ children }: { children: ReactNode }) {
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-xl font-bold text-slate-950 shadow-lg shadow-emerald-500/20">
-              G
+            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-emerald-500/10 border border-emerald-500/20 bg-slate-950">
+              <img 
+                src="/Gemini_Generated_Image_58dqsd58dqsd58dq.png" 
+                alt="Grindwise Logo" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-text-primary">
