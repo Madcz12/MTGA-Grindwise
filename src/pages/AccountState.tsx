@@ -52,100 +52,108 @@ export function AccountState() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-10 animate-slide-up">
-        <h2 className="text-4xl brutalist-title text-text-primary mb-3">Tu Estado de Cuenta</h2>
-        <p className="text-text-secondary uppercase tracking-widest text-xs">Indica qué cartas y wildcards ya tienes para un cálculo preciso</p>
+    <div className="max-w-4xl mx-auto px-4">
+      <div className="text-center mb-12 animate-slide-up">
+        <h2 className="text-4xl font-black tracking-tight text-text-primary mb-4">Estado de Cuenta</h2>
+        <p className="text-text-secondary font-medium max-w-xl mx-auto">Indica qué cartas y wildcards ya tienes para un cálculo preciso</p>
       </div>
 
       {/* Wildcard inventory */}
-      <div className="brutalist-card-glow p-8 mb-8 animate-slide-up" style={{ animationDelay: '100ms' }}>
-        <h3 className="text-xs uppercase tracking-widest text-accent mb-6 font-bold">Wildcards Disponibles en el Tomo</h3>
-        <div className="grid grid-cols-2 @md:grid-cols-4 gap-6">
+      <div className="card-modern p-8 mb-8 animate-slide-up bg-slate-900/40 border-emerald-500/10 shadow-2xl shadow-emerald-500/5" style={{ animationDelay: '100ms' }}>
+        <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-emerald-500 mb-8">Wildcards en el Tomo</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {(['common', 'uncommon', 'rare', 'mythic'] as Rarity[]).map(rarity => {
             const icons: Record<Rarity, string> = { common: '●', uncommon: '◆', rare: '★', mythic: '✦' };
-            const colors: Record<Rarity, string> = { common: '#9ca3af', uncommon: '#c0c0c0', rare: '#d4af37', mythic: '#e85d26' };
+            const colors: Record<Rarity, string> = { common: 'text-slate-400', uncommon: 'text-slate-300', rare: 'text-amber-400', mythic: 'text-orange-500' };
             return (
-              <div key={rarity} className="flex flex-col items-center gap-3 p-4 border border-border-subtle bg-bg-primary/50 relative group">
-                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <span style={{ color: colors[rarity] }} className="text-2xl drop-shadow-md">{icons[rarity]}</span>
+              <div key={rarity} className="flex flex-col items-center gap-4 p-6 rounded-2xl bg-slate-950/50 border border-slate-800/50 hover:border-emerald-500/30 transition-all duration-300 group">
+                <span className={`text-2xl ${colors[rarity]} drop-shadow-[0_0_8px_rgba(0,0,0,0.5)] group-hover:scale-125 transition-transform`}>{icons[rarity]}</span>
                 <input
                   type="number"
                   min={0}
                   max={99}
                   value={wildcardInventory[rarity]}
                   onChange={e => handleWildcardChange(rarity, parseInt(e.target.value) || 0)}
-                  className="input-field text-center font-serif font-bold text-2xl w-24 bg-transparent border-b-accent border-t-0 border-l-0 border-r-0 focus:bg-accent/10 focus:ring-0 px-0"
+                  className="bg-transparent text-center font-bold text-3xl w-full focus:outline-none text-text-primary"
                 />
-                <span className="text-[10px] uppercase tracking-widest text-text-muted">{rarity}</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">{rarity}</span>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Gold */}
-      <div className="brutalist-card p-8 mb-8 animate-slide-up" style={{ animationDelay: '150ms' }}>
-        <div className="grid grid-cols-1 @md:grid-cols-2 gap-8">
-          <div className="w-full">
-            <h3 className="text-xs uppercase tracking-widest text-text-primary mb-4">🪙 Oro Actual (opcional)</h3>
-            <input
-              type="number"
-              min={0}
-              step={100}
-              value={currentGold}
-              onChange={e => dispatch({ type: 'SET_CURRENT_GOLD', gold: parseInt(e.target.value) || 0 })}
-              className="input-field font-mono w-40"
-              placeholder="0"
-            />
-          </div>
-          <div className="w-full">
-            <h3 className="text-xs uppercase tracking-widest text-text-primary mb-4">🕐 Horas de juego por día</h3>
-            <div className="flex gap-2 flex-wrap">
-              {HOURS_OPTIONS.map(opt => (
-                <button
-                  key={opt.value}
-                  onClick={() => dispatch({ type: 'SET_HOURS_PER_DAY', hours: opt.value })}
-                  className={`px-4 py-2 border text-xs tracking-wider transition-all ${
-                    sessionProfile.hoursPerDay === opt.value
-                      ? 'border-accent text-accent bg-accent/5'
-                      : 'border-border-subtle text-text-secondary hover:border-text-muted hover:text-text-primary bg-transparent'
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
+      {/* Profile & Gold */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <div className="lg:col-span-1 card-modern p-8 animate-slide-up" style={{ animationDelay: '150ms' }}>
+          <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6">🪙 Oro Actual</h3>
+          <input
+            type="number"
+            min={0}
+            step={100}
+            value={currentGold}
+            onChange={e => dispatch({ type: 'SET_CURRENT_GOLD', gold: parseInt(e.target.value) || 0 })}
+            className="input-modern text-xl font-bold"
+            placeholder="0"
+          />
         </div>
-        <div className="mt-8 pt-8 border-t border-border-subtle">
-          <h3 className="text-xs uppercase tracking-widest text-text-primary mb-4">📅 Días que juegas a la semana</h3>
-          <div className="flex gap-2 flex-wrap">
-            {DAYS.map((day, i) => {
-              const dayNum = i + 1;
-              const isActive = dayNum <= sessionProfile.daysPerWeek;
-              return (
-                <button
-                  key={day}
-                  onClick={() => dispatch({ type: 'SET_DAYS_PER_WEEK', days: isActive && dayNum === sessionProfile.daysPerWeek ? dayNum - 1 : dayNum })}
-                  className={`w-12 h-12 border flex items-center justify-center text-sm font-serif transition-all ${
-                    isActive
-                      ? 'border-accent text-accent bg-accent/5'
-                      : 'border-border-subtle text-text-muted hover:border-text-muted hover:text-text-primary bg-transparent'
-                  }`}
-                >
-                  {day}
-                </button>
-              );
-            })}
+
+        <div className="lg:col-span-2 card-modern p-8 animate-slide-up" style={{ animationDelay: '200ms' }}>
+          <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6">🕐 Perfil de Juego</h3>
+          <div className="space-y-8">
+            <div>
+              <p className="text-xs font-bold text-text-secondary mb-4 uppercase tracking-wider">Horas por día:</p>
+              <div className="flex gap-2 flex-wrap">
+                {HOURS_OPTIONS.map(opt => (
+                  <button
+                    key={opt.value}
+                    onClick={() => dispatch({ type: 'SET_HOURS_PER_DAY', hours: opt.value })}
+                    className={`px-5 py-2 rounded-lg text-xs font-bold tracking-wider transition-all border ${
+                      sessionProfile.hoursPerDay === opt.value
+                        ? 'bg-emerald-500 border-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20'
+                        : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-600'
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div>
+              <p className="text-xs font-bold text-text-secondary mb-4 uppercase tracking-wider">Días a la semana:</p>
+              <div className="flex gap-2 flex-wrap">
+                {DAYS.map((day, i) => {
+                  const dayNum = i + 1;
+                  const isActive = dayNum <= sessionProfile.daysPerWeek;
+                  return (
+                    <button
+                      key={day}
+                      onClick={() => dispatch({ type: 'SET_DAYS_PER_WEEK', days: isActive && dayNum === sessionProfile.daysPerWeek ? dayNum - 1 : dayNum })}
+                      className={`w-11 h-11 rounded-lg border flex items-center justify-center text-sm font-bold transition-all ${
+                        isActive
+                          ? 'bg-emerald-500 border-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20'
+                          : 'bg-slate-950 border-slate-800 text-slate-500 hover:border-slate-600'
+                      }`}
+                    >
+                      {day}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Card list */}
-      <div className="brutalist-card p-8 mb-8 animate-slide-up" style={{ animationDelay: '200ms' }}>
-        <h3 className="text-xs uppercase tracking-widest text-text-primary mb-6 border-b border-border-subtle pb-2">Contenido del Mazo ({maindeckEntries.length} inscripciones)</h3>
-        <div className="space-y-2 max-h-96 overflow-y-auto pr-2">
+      <div className="card-modern animate-slide-up mb-12" style={{ animationDelay: '250ms' }}>
+        <div className="p-8 border-b border-slate-800 flex items-center justify-between">
+          <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">Contenido del Mazo</h3>
+          <span className="bg-slate-800 text-slate-300 text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-widest">{maindeckEntries.length} Cartas</span>
+        </div>
+        
+        <div className="p-4 space-y-3 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800">
           {maindeckEntries.map((entry, i) => (
             <CardRow
               key={`${entry.name}-${entry.setCode}-${i}`}
@@ -154,34 +162,45 @@ export function AccountState() {
               onOwnedChange={copies => handleOwnedChange(entry, copies)}
             />
           ))}
-        </div>
 
-        {sideboardEntries.length > 0 && (
-          <>
-            <h3 className="text-xs uppercase tracking-widest text-text-primary mt-8 mb-6 border-b border-border-subtle pb-2">Sideboard ({sideboardEntries.length})</h3>
-            <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
-              {sideboardEntries.map((entry, i) => (
-                <CardRow
-                  key={`sb-${entry.name}-${entry.setCode}-${i}`}
-                  entry={entry}
-                  copiesOwned={ownedCards.get(getCardKey(entry)) || 0}
-                  onOwnedChange={copies => handleOwnedChange(entry, copies)}
-                />
-              ))}
+          {sideboardEntries.length > 0 && (
+            <div className="pt-8">
+              <div className="p-4 bg-slate-950/30 rounded-lg mb-4 border border-slate-800/30">
+                <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-600">Sideboard ({sideboardEntries.length})</h3>
+              </div>
+              <div className="space-y-3">
+                {sideboardEntries.map((entry, i) => (
+                  <CardRow
+                    key={`sb-${entry.name}-${entry.setCode}-${i}`}
+                    entry={entry}
+                    copiesOwned={ownedCards.get(getCardKey(entry)) || 0}
+                    onOwnedChange={copies => handleOwnedChange(entry, copies)}
+                  />
+                ))}
+              </div>
             </div>
-          </>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: '300ms' }}>
-        <button onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'import' })} className="text-xs uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors">
-          [ ← Volver al principio ]
+      <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-20 animate-slide-up" style={{ animationDelay: '300ms' }}>
+        <button 
+          onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'import' })} 
+          className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 hover:text-text-primary transition-colors flex items-center gap-2"
+        >
+          <span className="text-base">←</span> Volver al principio
         </button>
-        <button onClick={handleCalculate} className="btn-primary" disabled={state.isLoading}>
-          {state.isLoading ? 'Consultando los astros...' : 'Trazar Hoja de Ruta'}
+        
+        <button 
+          onClick={handleCalculate} 
+          className="btn-modern-primary w-full md:w-auto min-w-[280px] py-4 text-lg" 
+          disabled={state.isLoading}
+        >
+          {state.isLoading ? 'Calculando...' : 'Trazar Hoja de Ruta'}
         </button>
       </div>
     </div>
   );
 }
+

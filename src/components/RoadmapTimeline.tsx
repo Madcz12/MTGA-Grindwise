@@ -7,43 +7,62 @@ interface RoadmapTimelineProps {
 export function RoadmapTimeline({ weeks }: RoadmapTimelineProps) {
   if (weeks.length === 0) {
     return (
-      <div className="brutalist-card p-8 text-center border-dashed">
-        <span className="text-4xl mb-4 block">🎉</span>
-        <p className="text-lg font-semibold text-text-primary">¡Ya tienes todo!</p>
-        <p className="text-sm text-text-secondary mt-1">No necesitas wildcards adicionales</p>
+      <div className="card-modern p-12 text-center border-dashed border-slate-800">
+        <span className="text-5xl mb-6 block">✨</span>
+        <p className="text-xl font-black text-text-primary">¡Objetivo Alcanzado!</p>
+        <p className="text-sm font-medium text-slate-500 mt-2">No necesitas comodines adicionales para este mazo.</p>
       </div>
     );
   }
 
   return (
     <div className="relative">
-      <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-accent via-mana-blue to-mana-black" />
-      <div className="space-y-4">
+      <div className="absolute left-8 top-0 bottom-0 w-px bg-slate-800" />
+      <div className="space-y-8">
         {weeks.map((week, index) => (
-          <div key={week.weekNumber} className="relative pl-14 animate-slide-up" style={{ animationDelay: `${index * 100}ms` }}>
-            <div className={`absolute left-4 w-5 h-5 rounded-full border-2 flex items-center justify-center ${week.isComplete ? 'bg-success border-success shadow-lg shadow-success/30' : 'bg-bg-card border-accent/50'}`}>
-              {week.isComplete && <span className="text-white text-xs">✓</span>}
+          <div key={week.weekNumber} className="relative pl-20 animate-slide-up" style={{ animationDelay: `${index * 100}ms` }}>
+            <div className={`absolute left-5 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${week.isComplete ? 'bg-emerald-500 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-slate-950 border-slate-800'}`}>
+              {week.isComplete && <span className="text-slate-950 text-[10px] font-black">✓</span>}
             </div>
-            <div className={`brutalist-card p-5 ${week.isComplete ? 'border-success/30 bg-success/5' : ''}`}>
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="text-sm font-bold text-text-primary">Semana {week.weekNumber}</h4>
-                {week.isComplete && <span className="text-xs font-semibold text-success bg-success/10 px-2 py-0.5 rounded-full">🎯 ¡Meta!</span>}
+            
+            <div className={`card-modern p-6 transition-all duration-500 ${week.isComplete ? 'border-emerald-500/30 bg-emerald-500/5' : 'bg-slate-900/40'}`}>
+              <div className="flex items-center justify-between mb-6">
+                <h4 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Semana {week.weekNumber}</h4>
+                {week.isComplete && <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Mazo Completado</span>}
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                <div><p className="text-xs text-text-muted">📜 Misiones</p><p className="font-mono font-semibold text-text-primary">{week.dailyQuestsCompleted}/día</p></div>
-                <div><p className="text-xs text-text-muted">⚔️ Victorias</p><p className="font-mono font-semibold text-text-primary">{week.weeklyWinsAchieved}/sem</p></div>
-                <div><p className="text-xs text-text-muted">🪙 Oro</p><p className="font-mono font-semibold text-text-primary">{week.goldEarned.toLocaleString()}</p></div>
-                <div><p className="text-xs text-text-muted">📦 Sobres</p><p className="font-mono font-semibold text-text-primary">{week.packsOpened} ({week.packsCumulative})</p></div>
+              
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Misiones</p>
+                  <p className="font-black text-text-primary">{week.dailyQuestsCompleted}/día</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Victorias</p>
+                  <p className="font-black text-text-primary">{week.weeklyWinsAchieved}/sem</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Oro</p>
+                  <p className="font-black text-emerald-500">+{week.goldEarned.toLocaleString()}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Sobres</p>
+                  <p className="font-black text-text-primary">{week.packsOpened} <span className="text-slate-500 text-xs font-medium">({week.packsCumulative})</span></p>
+                </div>
               </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {week.wildcardCumulative.mythic > 0 && <span className="text-xs px-2 py-0.5 rounded border bg-rarity-mythic/10 text-rarity-mythic border-rarity-mythic/30">✦ {week.wildcardCumulative.mythic}</span>}
-                {week.wildcardCumulative.rare > 0 && <span className="text-xs px-2 py-0.5 rounded border bg-rarity-rare/10 text-rarity-rare border-rarity-rare/30">★ {week.wildcardCumulative.rare}</span>}
-                {week.wildcardCumulative.uncommon > 0 && <span className="text-xs px-2 py-0.5 rounded border bg-rarity-uncommon/10 text-rarity-uncommon border-rarity-uncommon/30">◆ {week.wildcardCumulative.uncommon}</span>}
-              </div>
+
+              {(week.wildcardCumulative.mythic > 0 || week.wildcardCumulative.rare > 0) && (
+                <div className="mt-6 pt-6 border-t border-slate-800/50 flex flex-wrap gap-2">
+                  {week.wildcardCumulative.mythic > 0 && <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border bg-orange-500/10 text-orange-500 border-orange-500/20">✦ {week.wildcardCumulative.mythic}</span>}
+                  {week.wildcardCumulative.rare > 0 && <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border bg-amber-400/10 text-amber-400 border-amber-400/20">★ {week.wildcardCumulative.rare}</span>}
+                  {week.wildcardCumulative.uncommon > 0 && <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border bg-slate-300/10 text-slate-300 border-slate-300/20">◆ {week.wildcardCumulative.uncommon}</span>}
+                </div>
+              )}
             </div>
           </div>
         ))}
       </div>
     </div>
   );
+}
+
 }

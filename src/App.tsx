@@ -12,10 +12,10 @@ function AppRouter() {
     <Layout>
       {/* Global loading overlay */}
       {isLoading && (
-        <div className="fixed inset-0 bg-bg-primary/80 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="glass-card-glow p-8 text-center animate-fade-in">
-            <div className="w-12 h-12 border-3 border-accent/30 border-t-accent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-text-primary font-semibold">{loadingMessage || 'Cargando...'}</p>
+        <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-6">
+          <div className="glass-card-glow p-10 text-center animate-scale-in max-w-sm w-full">
+            <div className="w-16 h-16 border-4 border-accent/20 border-t-accent rounded-full animate-spin mx-auto mb-6" />
+            <p className="text-white font-serif text-xl tracking-wide uppercase">{loadingMessage || 'Descifrando...'}</p>
           </div>
         </div>
       )}

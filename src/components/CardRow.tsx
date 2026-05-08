@@ -13,25 +13,25 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
 
   return (
     <div
-      className={`flex items-center gap-4 p-3 brutalist-card mb-4 group transition-all duration-300 ${
+      className={`flex items-center gap-5 p-4 rounded-xl border transition-all duration-300 group ${
         isFullyOwned
-          ? 'bg-success/5 border-success/40'
+          ? 'bg-emerald-500/5 border-emerald-500/30'
           : isIllegal
-            ? 'bg-error/5 border-error/40'
-            : ''
+            ? 'bg-red-500/5 border-red-500/30'
+            : 'bg-slate-950/40 border-slate-800 hover:border-slate-700'
       }`}
     >
       {/* Card art thumbnail */}
-      <div className="w-16 h-12 border-2 border-border-subtle overflow-hidden bg-bg-primary flex-shrink-0 relative">
+      <div className="w-16 h-12 rounded-lg border border-slate-800 overflow-hidden bg-slate-900 flex-shrink-0 relative shadow-inner">
         {entry.imageUri ? (
           <img
             src={entry.imageUri}
             alt={entry.name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-text-muted text-xs">
+          <div className="w-full h-full flex items-center justify-center text-slate-600 text-xs font-bold">
             ?
           </div>
         )}
@@ -39,42 +39,43 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
 
       {/* Card info */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-sm font-serif font-bold text-text-primary truncate group-hover:text-accent transition-colors">
+        <div className="flex items-center gap-3 mb-1.5">
+          <span className="text-sm font-bold text-text-primary truncate transition-colors group-hover:text-emerald-400">
             {entry.name}
           </span>
           {isIllegal && (
-            <span className="text-[10px] uppercase tracking-widest text-error border border-error/30 px-1 py-0.5">
+            <span className="text-[10px] font-black uppercase tracking-widest text-red-400 bg-red-400/10 border border-red-400/20 px-1.5 py-0.5 rounded-md">
               No legal
             </span>
           )}
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono text-text-muted uppercase">{entry.setCode}</span>
-          {entry.rarity && <RarityBadge rarity={entry.rarity} size="sm" showLabel={false} />}
-          <span className="text-xs font-mono text-text-muted">×{entry.quantity}</span>
           {entry.section === 'sideboard' && (
-            <span className="text-[10px] uppercase tracking-widest text-mana-blue border border-mana-blue/30 px-1 py-0.5">
+            <span className="text-[10px] font-black uppercase tracking-widest text-blue-400 bg-blue-400/10 border border-blue-400/20 px-1.5 py-0.5 rounded-md">
               SB
             </span>
           )}
         </div>
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{entry.setCode}</span>
+          <div className="w-1 h-1 rounded-full bg-slate-800"></div>
+          {entry.rarity && <RarityBadge rarity={entry.rarity} size="sm" showLabel={false} />}
+          <div className="w-1 h-1 rounded-full bg-slate-800"></div>
+          <span className="text-xs font-bold text-slate-400">×{entry.quantity}</span>
+        </div>
       </div>
 
       {/* Owned selector */}
-      <div className="flex items-center gap-3 flex-shrink-0">
-        <label className="text-[10px] uppercase tracking-widest text-text-secondary whitespace-nowrap">Tengo:</label>
-        <div className="flex gap-1">
+      <div className="flex items-center gap-4 flex-shrink-0">
+        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 whitespace-nowrap">Propiedad:</label>
+        <div className="flex gap-1.5">
           {Array.from({ length: entry.quantity + 1 }, (_, i) => (
             <button
               key={i}
               onClick={() => onOwnedChange(i)}
-              className={`w-8 h-8 border flex items-center justify-center text-xs font-sans transition-all duration-300 ${
+              className={`w-9 h-9 rounded-lg border flex items-center justify-center text-xs font-bold transition-all duration-200 ${
                 i === copiesOwned
-                  ? 'bg-accent text-bg-primary'
-                  : 'border-border-subtle text-text-muted hover:border-accent hover:text-accent'
+                  ? 'bg-emerald-500 border-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                  : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-600'
               }`}
-              style={{ clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)' }}
             >
               {i}
             </button>
@@ -84,3 +85,4 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
     </div>
   );
 }
+

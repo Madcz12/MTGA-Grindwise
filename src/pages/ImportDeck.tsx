@@ -96,52 +96,55 @@ export function ImportDeck() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-4xl mx-auto px-4">
       {/* Hero */}
-      <div className="text-center mb-12 animate-slide-up">
-        <h2 className="text-5xl brutalist-title mb-4">
-          <span className="gold-gradient-text italic">Planifica tus Wildcards</span>
+      <div className="text-center mb-16 animate-slide-up">
+        <h2 className="text-5xl md:text-6xl font-black tracking-tight text-text-primary mb-6">
+          Planifica tus <span className="text-emerald-500">Wildcards</span>
         </h2>
-        <p className="text-text-secondary text-lg max-w-xl mx-auto">
+        <p className="text-text-secondary text-lg md:text-xl max-w-2xl mx-auto font-medium">
           Descubre cuántos comodines necesitas para armar tu mazo de Standard y
           obtén una hoja de ruta personalizada.
         </p>
       </div>
 
       {/* Import area */}
-      <div className="brutalist-card p-8 mb-8 animate-slide-up" style={{ animationDelay: '100ms' }}>
-        <label className="block text-sm uppercase tracking-widest text-text-secondary mb-4">
-          Pega tu lista de mazo (Formato MTGA)
-        </label>
-        <textarea
-          value={deckText}
-          onChange={e => setDeckText(e.target.value)}
-          placeholder={`Deck\n4 Lightning Bolt (M21) 166\n2 Snapcaster Mage (ISD) 78\n...\n\nSideboard\n3 Mystical Dispute (ELD) 58`}
-          className="input-field font-mono text-sm resize-none"
-          rows={14}
-          spellCheck={false}
-          disabled={isLoading}
-        />
+      <div className="relative group animate-slide-up" style={{ animationDelay: '100ms' }}>
+        <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition duration-500" />
+        
+        <div className="brutalist-card p-8 mb-8 relative">
+          <label className="block text-xs font-bold uppercase tracking-[0.2em] text-emerald-500/80 mb-6">
+            Pega tu lista de mazo (Formato MTGA)
+          </label>
+          <textarea
+            value={deckText}
+            onChange={e => setDeckText(e.target.value)}
+            placeholder={`Deck\n4 Lightning Bolt (M21) 166\n2 Snapcaster Mage (ISD) 78\n...\n\nSideboard\n3 Mystical Dispute (ELD) 58`}
+            className="input-field font-mono text-sm resize-none w-full min-h-[350px] bg-slate-950/50 border-emerald-500/30 focus:border-emerald-500 transition-colors"
+            spellCheck={false}
+            disabled={isLoading}
+          />
+        </div>
       </div>
 
-      {/* Example button */}
-      <div className="flex items-center justify-between mb-8 animate-slide-up" style={{ animationDelay: '200ms' }}>
+      {/* Action Area */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-16 animate-slide-up" style={{ animationDelay: '200ms' }}>
         <button
           onClick={() => setDeckText(EXAMPLE_DECK)}
-          className="text-xs uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
+          className="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-emerald-400 transition-colors"
           disabled={isLoading}
         >
-          [ Cargar Tomo de Ejemplo ]
+          [ Cargar Ejemplo ]
         </button>
 
         <button
           onClick={handleAnalyze}
-          className="btn-primary"
+          className="btn-modern-primary w-full md:w-auto min-w-[240px] py-4 text-lg"
           disabled={isLoading || !deckText.trim()}
         >
           {isLoading ? (
-            <span className="flex items-center gap-2">
-              <span className="animate-spin">⏳</span>
+            <span className="flex items-center justify-center gap-3">
+              <span className="w-5 h-5 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin" />
               {loadingMessage}
             </span>
           ) : (
@@ -152,14 +155,14 @@ export function ImportDeck() {
 
       {/* Progress bar */}
       {isLoading && progress.total > 0 && (
-        <div className="mb-8">
-          <div className="w-full h-[1px] bg-border-subtle relative">
+        <div className="mb-12 animate-fade-in">
+          <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
             <div
-              className="absolute top-0 left-0 h-[1px] bg-accent transition-all duration-300"
+              className="h-full bg-emerald-500 transition-all duration-300 shadow-[0_0_12px_rgba(16,185,129,0.4)]"
               style={{ width: `${(progress.loaded / progress.total) * 100}%` }}
             />
           </div>
-          <p className="text-[10px] uppercase tracking-widest text-text-muted mt-2 text-center font-mono">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mt-3 text-center">
             Procesando {progress.loaded} de {progress.total}
           </p>
         </div>
@@ -167,30 +170,37 @@ export function ImportDeck() {
 
       {/* Errors */}
       {errors.length > 0 && (
-        <div className="brutalist-card border-error p-6 mb-8 bg-error/5 animate-fade-in">
-          <p className="text-xs uppercase tracking-widest text-error mb-4 font-bold">Inscripciones Corruptas Detectadas:</p>
-          <ul className="space-y-2">
+        <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-8 mb-12 animate-fade-in">
+          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-6 flex items-center gap-2">
+            <span className="text-lg">⚠️</span> Inscripciones Corruptas Detectadas:
+          </p>
+          <ul className="space-y-3">
             {errors.map((err, i) => (
-              <li key={i} className="text-sm font-mono text-error/80 before:content-['>'] before:mr-2 before:text-error/50">{err}</li>
+              <li key={i} className="text-sm font-medium text-slate-400 flex gap-3">
+                <span className="text-red-500/50">›</span>
+                {err}
+              </li>
             ))}
           </ul>
         </div>
       )}
 
       {/* Feature cards */}
-      <div className="grid-auto mt-12 animate-slide-up" style={{ animationDelay: '300ms' }}>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20 animate-slide-up" style={{ animationDelay: '300ms' }}>
         {[
-          { title: 'Inventario', desc: 'Calcula exactamente qué comodines te faltan por rareza' },
-          { title: 'Hoja de Ruta', desc: 'Plan semana a semana basado en oro y track' },
-          { title: 'Sustitutos', desc: 'Alternativas más económicas para cartas Míticas/Raras' },
+          { title: 'Inventario', desc: 'Calcula exactamente qué comodines te faltan por rareza', icon: '🎴' },
+          { title: 'Hoja de Ruta', desc: 'Plan semana a semana basado en oro y track', icon: '📊' },
+          { title: 'Sustitutos', desc: 'Alternativas más económicas para cartas Míticas/Raras', icon: '💡' },
         ].map((f, i) => (
-          <div key={f.title} className="brutalist-card p-6 border-t-2 border-t-border-subtle hover:border-t-accent text-center">
-            <span className="brutalist-number text-2xl block mb-3 opacity-50">0{i + 1}</span>
-            <h3 className="text-sm uppercase tracking-widest text-text-primary mb-2 font-medium">{f.title}</h3>
-            <p className="text-sm text-text-secondary font-serif italic">{f.desc}</p>
+          <div key={f.title} className="card-modern p-8 hover:border-emerald-500/30 transition-colors group">
+            <div className="text-3xl mb-6 group-hover:scale-110 transition-transform duration-300">{f.icon}</div>
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-text-primary mb-3">{f.title}</h3>
+            <p className="text-sm text-text-secondary leading-relaxed font-medium">{f.desc}</p>
           </div>
         ))}
       </div>
     </div>
   );
+}
+
 }

@@ -1,69 +1,57 @@
 @import "tailwindcss";
 
 /* ─── Google Fonts ───────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,400;0,600;0,700;1,400&family=Josefin+Sans:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Cormorant+Infant:ital,wght@0,400;0,700;1,400&display=swap');
 
-/* ─── Custom Theme (Tailwind v4 CSS-first) ───────────────────────── */
+/* ─── Modern Design Theme (Tailwind v4) ─────────────────────────── */
 @theme {
-  /* Mana Colors */
+  /* Core Palette (Slate & Emerald) */
+  --color-bg-primary: #020617; /* Slate 950 */
+  --color-bg-secondary: #0f172a; /* Slate 900 */
+  --color-bg-card: #1e293b; /* Slate 800 */
+  --color-bg-card-hover: #334155; /* Slate 700 */
+  
+  --color-border-subtle: #1e293b;
+  --color-border-strong: #334155;
+  --color-border-accent: #10b981; /* Emerald 500 */
+
+  /* Text */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+  --color-text-accent: #10b981;
+
+  /* Accent (Emerald) */
+  --color-accent: #10b981;
+  --color-accent-hover: #059669;
+  --color-accent-dim: rgba(16, 185, 129, 0.1);
+
+  /* Mana & Rarity (Kept for logic) */
   --color-mana-white: #f9e4b7;
   --color-mana-blue: #0e67ab;
   --color-mana-black: #6b3fa0;
   --color-mana-red: #d3202a;
   --color-mana-green: #00733e;
-
-  /* Rarity Colors */
+  
   --color-rarity-common: #9ca3af;
   --color-rarity-uncommon: #c0c0c0;
-  --color-rarity-rare: #d4af37;
-  --color-rarity-mythic: #e85d26;
-
-  /* Kaladesh Art Deco Theme */
-  --color-bg-primary: #041c1e; /* Deep Emerald */
-  --color-bg-secondary: #062c30;
-  --color-bg-card: #0a3a3e;
-  --color-bg-card-hover: #0d4a4f;
-  
-  --color-border-subtle: rgba(212, 175, 55, 0.2);
-  --color-border-strong: #d4af37; /* Brass/Gold */
-  --color-border-glow: rgba(212, 175, 55, 0.3);
-
-  /* Text */
-  --color-text-primary: #e2e8e4;
-  --color-text-secondary: #a3b8b0;
-  --color-text-muted: #627c76;
-  --color-text-accent: #d4af37;
-
-  /* Accent (Gold/Brass) */
-  --color-accent: #d4af37;
-  --color-accent-hover: #f1c40f;
-  --color-accent-dim: rgba(212, 175, 55, 0.1);
-
-  /* Success / Warning / Error */
-  --color-success: #2ecc71;
-  --color-warning: #f1c40f;
-  --color-error: #e74c3c;
+  --color-rarity-rare: #fbbf24;
+  --color-rarity-mythic: #f97316;
 
   /* Fonts */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
   --font-serif: 'Cormorant Infant', serif;
-  --font-sans: 'Josefin Sans', sans-serif;
-  --font-mono: 'Space Mono', monospace;
 
-  /* Fluid Typography */
-  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
-  --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
-  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
-  --text-xl: clamp(1.25rem, 1rem + 1.25vw, 1.5rem);
-  --text-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2rem);
-  --text-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
-  --text-4xl: clamp(2.25rem, 1.75rem + 2.5vw, 3.5rem);
-  --text-5xl: clamp(2.5rem, 2rem + 3vw, 4rem);
+  /* Success / Warning / Error */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
 
   /* Animations */
-  --animate-fade-in: fade-in 0.6s ease-out;
-  --animate-slide-up: slide-up 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  --animate-scale-in: scale-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animate-fade-in: fade-in 0.4s ease-out;
+  --animate-slide-up: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-scale-in: scale-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ─── Keyframes ──────────────────────────────────────────────────── */
@@ -73,12 +61,12 @@
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes scale-in {
-  from { opacity: 0; transform: scale(0.9); }
+  from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
 
@@ -94,118 +82,100 @@ body {
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
   min-height: 100vh;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30-30-30z' fill='%23d4af37' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
   -webkit-font-smoothing: antialiased;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(79, 70, 229, 0.05) 0px, transparent 50%);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-/* ─── Utility Classes (Kaladesh Art Deco) ────────────────────────── */
-
-.brutalist-card, .kaladesh-card {
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-accent);
-  position: relative;
-  transition: all 0.3s ease;
-  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-}
-
-.brutalist-card::before, .kaladesh-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  margin: 4px;
-  pointer-events: none;
-  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-}
-
-.brutalist-card:hover, .kaladesh-card:hover {
-  background: var(--color-bg-card-hover);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
-}
-
-.brutalist-card-glow, .kaladesh-card-glow {
-  background: var(--color-bg-card);
-  border: 2px solid var(--color-accent);
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
-  clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
-}
-
-.brutalist-title, .kaladesh-title {
-  font-family: var(--font-serif);
-  background: linear-gradient(to bottom, #f1c40f, #d4af37);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-}
-
-.brutalist-number, .kaladesh-number {
-  font-family: var(--font-sans);
-  font-weight: 300;
-  color: var(--color-accent);
-  letter-spacing: 0.1em;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #d4af37, #f1c40f);
-  color: #041c1e;
-  font-family: var(--font-sans);
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 12px 36px;
-  border: none;
-  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-  cursor: pointer;
-  transition: all 0.3s ease;
+  letter-spacing: -0.02em;
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+/* ─── Preservation Layer (Art Deco / Kaladesh) ───────────────────── */
+@layer components {
+  .deco-card {
+    background: #062c30;
+    border: 1px solid #d4af37;
+    position: relative;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  }
+
+  .deco-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    margin: 4px;
+    pointer-events: none;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  }
+
+  .deco-title {
+    font-family: var(--font-serif);
+    background: linear-gradient(to bottom, #f1c40f, #d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    text-transform: uppercase;
+  }
+
+  .deco-button {
+    background: linear-gradient(135deg, #d4af37, #f1c40f);
+    color: #041c1e;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 12px 36px;
+    border: none;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .deco-input {
+    background: rgba(4, 28, 30, 0.8);
+    border: 1px solid #d4af37;
+    color: #e2e8e4;
+    padding: 16px;
+    outline: none;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  }
+
+  /* Legacy aliases for preservation */
+  .brutalist-card { @apply deco-card; }
+  .brutalist-title { @apply deco-title; }
+  .input-field { @apply deco-input; }
+  .btn-primary { @apply deco-button; }
+  .glass-card-glow {
+    background: #0a3a3e;
+    border: 2px solid #d4af37;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+  }
 }
 
-.btn-secondary {
-  background: transparent;
-  color: var(--color-accent);
-  border: 1px solid var(--color-accent);
-  font-family: var(--font-sans);
-  font-weight: 600;
-  padding: 10px 24px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-  transition: all 0.3s ease;
+/* ─── Modern Utility Components ──────────────────────────────────── */
+@layer components {
+  .btn-modern {
+    @apply px-5 py-2.5 rounded-lg font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  
+  .btn-modern-primary {
+    @apply btn-modern bg-emerald-500 text-slate-950 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20;
+  }
+
+  .btn-modern-secondary {
+    @apply btn-modern bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700;
+  }
+
+  .card-modern {
+    @apply bg-slate-900/50 border border-slate-800 rounded-xl backdrop-blur-md overflow-hidden;
+  }
+
+  .input-modern {
+    @apply w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all;
+  }
 }
 
-.btn-secondary:hover {
-  background: rgba(212, 175, 55, 0.1);
-  color: var(--color-accent-hover);
-}
-
-.input-field {
-  background: rgba(4, 28, 30, 0.8);
-  border: 1px solid var(--color-accent);
-  color: var(--color-text-primary);
-  padding: 16px;
-  font-family: var(--font-sans);
-  outline: none;
-  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-}
-
-.input-field:focus {
-  border-color: var(--color-accent-hover);
-  box-shadow: 0 0 15px rgba(241, 196, 15, 0.2);
-}
-
-.grid-auto {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
