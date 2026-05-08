@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ─── Google Fonts ───────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,400;0,600;0,700;1,400&family=Josefin+Sans:wght@300;400;600;700&display=swap');
 
 /* ─── Custom Theme (Tailwind v4 CSS-first) ───────────────────────── */
 @theme {
@@ -15,38 +15,38 @@
   /* Rarity Colors */
   --color-rarity-common: #9ca3af;
   --color-rarity-uncommon: #c0c0c0;
-  --color-rarity-rare: #ffcc00; /* Yellow */
-  --color-rarity-mythic: #ff2a2a; /* Red */
+  --color-rarity-rare: #d4af37;
+  --color-rarity-mythic: #e85d26;
 
-  /* Neo-Brutalist Theme */
-  --color-bg-primary: #f0f0f0;
-  --color-bg-secondary: #ffffff;
-  --color-bg-card: #ffffff;
-  --color-bg-card-hover: #e8e8e8;
+  /* Kaladesh Art Deco Theme */
+  --color-bg-primary: #041c1e; /* Deep Emerald */
+  --color-bg-secondary: #062c30;
+  --color-bg-card: #0a3a3e;
+  --color-bg-card-hover: #0d4a4f;
   
-  --color-border-subtle: #000000;
-  --color-border-strong: #000000;
-  --color-border-glow: transparent;
+  --color-border-subtle: rgba(212, 175, 55, 0.2);
+  --color-border-strong: #d4af37; /* Brass/Gold */
+  --color-border-glow: rgba(212, 175, 55, 0.3);
 
   /* Text */
-  --color-text-primary: #000000;
-  --color-text-secondary: #333333;
-  --color-text-muted: #666666;
-  --color-text-accent: #ff2a2a;
+  --color-text-primary: #e2e8e4;
+  --color-text-secondary: #a3b8b0;
+  --color-text-muted: #627c76;
+  --color-text-accent: #d4af37;
 
-  /* Accent */
-  --color-accent: #ff2a2a; /* Hard Red */
-  --color-accent-hover: #0000ff; /* Electric Blue */
-  --color-accent-dim: #ffe5e5;
+  /* Accent (Gold/Brass) */
+  --color-accent: #d4af37;
+  --color-accent-hover: #f1c40f;
+  --color-accent-dim: rgba(212, 175, 55, 0.1);
 
   /* Success / Warning / Error */
-  --color-success: #00d900;
-  --color-warning: #ffcc00;
-  --color-error: #ff2a2a;
+  --color-success: #2ecc71;
+  --color-warning: #f1c40f;
+  --color-error: #e74c3c;
 
   /* Fonts */
-  --font-serif: 'Archivo Black', sans-serif; /* Mapped to 'serif' to avoid refactoring all classes */
-  --font-sans: 'Space Mono', monospace;
+  --font-serif: 'Cormorant Infant', serif;
+  --font-sans: 'Josefin Sans', sans-serif;
   --font-mono: 'Space Mono', monospace;
 
   /* Fluid Typography */
@@ -61,9 +61,9 @@
   --text-5xl: clamp(2.5rem, 2rem + 3vw, 4rem);
 
   /* Animations */
-  --animate-fade-in: fade-in 0.3s steps(3, end);
-  --animate-slide-up: slide-up 0.4s cubic-bezier(0, 0, 0, 1);
-  --animate-reveal-line: reveal-line 0.5s cubic-bezier(0, 0, 0, 1);
+  --animate-fade-in: fade-in 0.6s ease-out;
+  --animate-slide-up: slide-up 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-scale-in: scale-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ─── Keyframes ──────────────────────────────────────────────────── */
@@ -73,13 +73,13 @@
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes reveal-line {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 /* ─── Base Styles ────────────────────────────────────────────────── */
@@ -89,216 +89,123 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   font-family: var(--font-sans);
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
   min-height: 100vh;
-  overflow-x: hidden;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30-30-30z' fill='%23d4af37' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-image: radial-gradient(circle, #d0d0d0 1px, transparent 1px);
-  background-size: 20px 20px;
 }
 
-/* Brutalist Typography overrides */
-h1, h2, h3, h4, h5, h6, .font-serif {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
-  text-transform: uppercase;
-}
-
-/* ─── Scrollbar ──────────────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-bg-primary);
-  border-left: 2px solid var(--color-border-subtle);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-border-subtle);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent);
-}
-
-/* ─── Utility Classes (Neo-Brutalist) ──────────────────────────── */
-
-/* Brutalist Cards replacing Grimoire */
-.brutalist-card, .brutalist-card {
-  background: var(--color-bg-secondary);
-  border: 4px solid var(--color-border-subtle);
-  border-radius: 0px; 
-  transition: all 0.1s ease;
-  position: relative;
-  box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
-}
-
-.brutalist-card:hover, .brutalist-card:hover {
-  background: var(--color-bg-card-hover);
-  transform: translate(-2px, -2px);
-  box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
-}
-
-.brutalist-card:active, .brutalist-card:active {
-  transform: translate(4px, 4px);
-  box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
-}
-
-.brutalist-card-glow, .brutalist-card-glow {
-  background: var(--color-bg-card);
-  border: 4px solid var(--color-border-subtle);
-  border-radius: 0px;
-  position: relative;
-  transition: all 0.1s ease;
-  box-shadow: 8px 8px 0px 0px var(--color-accent);
-}
-
-.brutalist-card-glow:hover, .brutalist-card-glow:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 10px 10px 0px 0px var(--color-accent);
-}
-
-/* Brutalist Typography Styles */
-.brutalist-title {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  color: var(--color-text-primary);
-  text-shadow: 2px 2px 0px var(--color-accent);
-}
-
-.brutalist-number {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  color: var(--color-accent);
-  text-shadow: 2px 2px 0px var(--color-border-subtle);
-}
-
-.gradient-text {
-  color: var(--color-text-primary);
-  background: var(--color-accent);
-  padding: 0 4px;
-}
-
-.gold-gradient-text {
-  color: var(--color-bg-secondary);
-  background: var(--color-text-primary);
-  padding: 0 4px;
-}
-
-/* Buttons */
-.btn-primary {
-  background: var(--color-accent);
-  color: #ffffff;
-  font-family: var(--font-serif);
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  padding: 12px 32px;
-  border-radius: 0;
-  border: 4px solid var(--color-border-subtle);
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.1s ease;
+}
+
+/* ─── Utility Classes (Kaladesh Art Deco) ────────────────────────── */
+
+.brutalist-card, .kaladesh-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-accent);
   position: relative;
-  min-height: 48px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+  transition: all 0.3s ease;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.brutalist-card::before, .kaladesh-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  margin: 4px;
+  pointer-events: none;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+.brutalist-card:hover, .kaladesh-card:hover {
+  background: var(--color-bg-card-hover);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+.brutalist-card-glow, .kaladesh-card-glow {
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-accent);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+  clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+}
+
+.brutalist-title, .kaladesh-title {
+  font-family: var(--font-serif);
+  background: linear-gradient(to bottom, #f1c40f, #d4af37);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.brutalist-number, .kaladesh-number {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  color: var(--color-accent);
+  letter-spacing: 0.1em;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #d4af37, #f1c40f);
+  color: #041c1e;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 12px 36px;
+  border: none;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
-  background: var(--color-accent-hover);
-}
-
-.btn-primary:active {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
-}
-
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: var(--color-bg-secondary);
-  color: var(--color-text-muted);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
 }
 
 .btn-secondary {
-  background: var(--color-bg-secondary);
-  color: var(--color-text-primary);
+  background: transparent;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
   font-family: var(--font-sans);
-  font-weight: 700;
+  font-weight: 600;
   padding: 10px 24px;
-  border-radius: 0;
-  border: 3px solid var(--color-border-subtle);
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.1s ease;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 3px 3px 0px 0px rgba(0,0,0,1);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  background: var(--color-accent);
-  color: #ffffff;
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--color-accent-hover);
 }
 
-.btn-secondary:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px 0px rgba(0,0,0,1);
-}
-
-/* Input Fields */
 .input-field {
-  background: var(--color-bg-secondary);
-  border: 3px solid var(--color-border-subtle);
-  border-radius: 0;
-  padding: 16px;
+  background: rgba(4, 28, 30, 0.8);
+  border: 1px solid var(--color-accent);
   color: var(--color-text-primary);
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  transition: all 0.1s ease;
+  padding: 16px;
+  font-family: var(--font-sans);
   outline: none;
-  width: 100%;
-  min-height: 44px;
-  box-shadow: inset 3px 3px 0px 0px rgba(0,0,0,0.05);
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
 }
 
 .input-field:focus {
-  border-color: var(--color-accent);
-  box-shadow: 4px 4px 0px 0px var(--color-accent);
-  transform: translate(-2px, -2px);
+  border-color: var(--color-accent-hover);
+  box-shadow: 0 0 15px rgba(241, 196, 15, 0.2);
 }
 
-.input-field::placeholder {
-  color: var(--color-text-muted);
-}
-
-/* ─── Grid Utilities ─────────────────────────────────────────────── */
 .grid-auto {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
-  gap: 1.5rem;
-}
-
-.grid-auto-fill {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
 }

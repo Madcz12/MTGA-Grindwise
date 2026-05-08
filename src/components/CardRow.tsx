@@ -13,11 +13,11 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
 
   return (
     <div
-      className={`flex items-center gap-4 p-3 brutalist-card mb-3 group ${
+      className={`flex items-center gap-4 p-3 brutalist-card mb-4 group transition-all duration-300 ${
         isFullyOwned
-          ? 'bg-success/10 border-success'
+          ? 'bg-success/5 border-success/40'
           : isIllegal
-            ? 'bg-error/10 border-error'
+            ? 'bg-error/5 border-error/40'
             : ''
       }`}
     >
@@ -69,13 +69,12 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
             <button
               key={i}
               onClick={() => onOwnedChange(i)}
-              className={`w-7 h-7 border-2 text-xs font-serif font-bold transition-all duration-100 ${
+              className={`w-8 h-8 border flex items-center justify-center text-xs font-sans transition-all duration-300 ${
                 i === copiesOwned
-                  ? i === entry.quantity
-                    ? 'border-success text-success bg-success/10 shadow-[2px_2px_0px_0px_#00d900]'
-                    : 'border-accent text-accent bg-accent/10 shadow-[2px_2px_0px_0px_#ff2a2a]'
-                  : 'border-border-subtle text-text-muted hover:border-text-primary hover:text-text-primary bg-bg-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'
+                  ? 'bg-accent text-bg-primary'
+                  : 'border-border-subtle text-text-muted hover:border-accent hover:text-accent'
               }`}
+              style={{ clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)' }}
             >
               {i}
             </button>
