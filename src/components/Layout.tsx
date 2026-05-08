@@ -29,8 +29,12 @@ export function Layout({ children }: { children: ReactNode }) {
               />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-text-primary">
-                Grind<span className="text-emerald-500 font-medium">Wise</span>
+              <h1 className="h-6 mb-1">
+                <img 
+                  src="/05956a2f-397f-4557-afbf-656a65068ce8.jpg" 
+                  alt="Grindwise" 
+                  className="h-full w-auto object-contain contrast-125 brightness-110"
+                />
               </h1>
               <p className="text-[10px] text-text-muted font-medium tracking-[0.2em] uppercase">MTG Arena • Standard</p>
             </div>
