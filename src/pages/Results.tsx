@@ -1,28 +1,21 @@
 import { useDeckState, useDeckDispatch } from '../hooks/useDeckState';
-import { WildcardCounter } from '../components/WildcardCounter';
-import { ProgressRing } from '../components/ProgressRing';
 import { RoadmapTimeline } from '../components/RoadmapTimeline';
 import { calculateCompletionPercent } from '../utils/wildcardCalc';
 import { formatDuration } from '../utils/roadmapCalc';
 import type { Rarity } from '../types';
-
-const RARITY_COLORS: Record<Rarity, string> = {
-  common: '#9ca3af',
-  uncommon: '#c0c0c0',
-  rare: '#d4af37',
-  mythic: '#e85d26',
-};
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function Results() {
-  const { wildcardGap, roadmap, budgetAnalysis } = useDeckState();
+  const { wildcardGap, roadmap } = useDeckState();
   const dispatch = useDeckDispatch();
+  const { t } = useLanguage();
 
   if (!wildcardGap || !roadmap) {
     return (
       <div className="text-center py-32 animate-fade-in">
-        <p className="text-sm font-serif italic text-text-secondary">El pergamino está en blanco. Inicia tu lectura.</p>
-        <button onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'import' })} className="btn-primary mt-8">
-          Comenzar
+        <p className="text-sm font-medium text-on-surface-variant">{t('results.empty.message')}</p>
+        <button onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'import' })} className="px-8 py-2 rounded bg-primary-container text-on-primary-container text-xs font-bold uppercase tracking-wider mt-8 btn-shimmer">
+          {t('results.empty.start')}
         </button>
       </div>
     );
@@ -30,95 +23,145 @@ export function Results() {
 
   const completion = calculateCompletionPercent(wildcardGap);
 
+  const getRarityColor = (rarity: Rarity) => {
+    switch (rarity) {
+      case 'common': return 'text-surface-variant';
+      case 'uncommon': return 'text-secondary-fixed';
+      case 'rare': return 'text-primary-container';
+      case 'mythic': return 'text-error';
+    }
+  };
+
+  const getRarityBg = (rarity: Rarity) => {
+    switch (rarity) {
+      case 'common': return 'bg-surface-variant';
+      case 'uncommon': return 'bg-secondary-fixed';
+      case 'rare': return 'bg-primary-container';
+      case 'mythic': return 'bg-error';
+    }
+  };
+
+  const getRarityIcon = (rarity: Rarity) => {
+    switch (rarity) {
+      case 'common': return 'diamond';
+      case 'uncommon': return 'diamond';
+      case 'rare': return 'star';
+      case 'mythic': return 'local_fire_department';
+    }
+  };
+
   return (
-    <div className="max-w-5xl mx-auto">
-      {/* Summary header */}
-      <div className="text-center mb-12 animate-slide-up">
-        <h2 className="text-4xl editorial-title text-text-primary mb-3">Tu Destino Sellado</h2>
-        <p className="text-xs uppercase tracking-widest text-text-secondary">El camino proyectado para completar el tomo</p>
+    <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8 md:py-12 space-y-12 animate-slide-up">
+      {/* Page Header */}
+      <div className="text-center space-y-2">
+        <h1 className="text-4xl md:text-5xl font-bold text-on-surface">{t('results.header.title')}</h1>
+        <p className="text-base text-on-surface-variant">{t('results.header.subtitle')}</p>
       </div>
 
-      {/* Overall progress + time estimate */}
-      <div className="grid-auto gap-8 mb-12">
-        <div className="grimoire-card-glow p-8 flex flex-col items-center justify-center animate-slide-up">
-          <ProgressRing percentage={completion} size={140} color="#d4af37" label="Completado" />
-        </div>
-
-        <div className="grimoire-card p-8 flex flex-col items-center justify-center animate-slide-up relative overflow-hidden" style={{ animationDelay: '100ms' }}>
-          <div className="absolute top-0 right-0 p-4 opacity-5 text-6xl font-serif">T</div>
-          <span className="editorial-number text-5xl mb-2">{formatDuration(roadmap.totalWeeks)}</span>
-          <span className="text-[10px] uppercase tracking-widest text-text-secondary mt-2">Tiempo estimado</span>
-        </div>
-
-        <div className="grimoire-card p-8 flex flex-col items-center justify-center animate-slide-up relative overflow-hidden" style={{ animationDelay: '200ms' }}>
-          <div className="absolute top-0 right-0 p-4 opacity-5 text-6xl font-serif">O</div>
-          <span className="editorial-number text-5xl mb-2">{roadmap.totalPacksNeeded}</span>
-          <span className="text-[10px] uppercase tracking-widest text-text-secondary mt-2">Sobres necesarios</span>
-          <span className="text-[10px] font-mono text-accent mt-2">~{roadmap.totalGoldNeeded.toLocaleString()} ORO</span>
-        </div>
-      </div>
-
-      {/* Wildcard gap cards */}
-      <h3 className="text-xs uppercase tracking-widest text-text-primary mb-6 border-b border-border-subtle pb-2 animate-slide-up" style={{ animationDelay: '250ms' }}>
-        Tributos Restantes (Gap)
-      </h3>
-      <div className="grid grid-cols-2 @md:grid-cols-4 gap-6 mb-12">
-        {(['common', 'uncommon', 'rare', 'mythic'] as Rarity[]).map((rarity, i) => (
-          <div key={rarity} className="animate-slide-up" style={{ animationDelay: `${300 + i * 50}ms` }}>
-            <WildcardCounter
-              rarity={rarity}
-              needed={wildcardGap[rarity].needed}
-              have={wildcardGap[rarity].have}
-              gap={wildcardGap[rarity].gap}
-            />
+      {/* Top Row Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Completion Card */}
+        <div className="bg-surface-container-low backdrop-blur-md rounded-xl p-8 border border-outline-variant/30 shadow-sm flex flex-col items-center justify-center space-y-6 relative overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-secondary-container/5 rounded-full blur-3xl pointer-events-none"></div>
+          
+          <div className="relative w-40 h-40">
+            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+              <path className="text-surface-variant/30" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3"></path>
+              <path className="text-secondary-container drop-shadow-[0_0_8px_rgba(0,241,254,0.5)]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray={`${completion}, 100`} strokeLinecap="round" strokeWidth="3"></path>
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-4xl font-bold text-on-surface">{completion}%</span>
+            </div>
           </div>
-        ))}
+          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">{t('results.stats.completed')}</span>
+        </div>
+
+        {/* Estimated Time Card */}
+        <div className="bg-surface-container-low backdrop-blur-md rounded-xl p-8 border border-outline-variant/30 shadow-sm flex flex-col justify-center relative overflow-hidden">
+          <div className="absolute bottom-0 right-0 opacity-5 text-[120px] font-bold leading-none select-none pointer-events-none">W</div>
+          <h2 className="text-4xl font-bold text-on-surface mb-2">{formatDuration(roadmap.totalWeeks, t)}</h2>
+          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mt-auto">{t('results.stats.estimatedTime')}</span>
+        </div>
+
+        {/* Packs Needed Card */}
+        <div className="bg-surface-container-low backdrop-blur-md rounded-xl p-8 border border-outline-variant/30 shadow-sm flex flex-col justify-center items-center text-center relative overflow-hidden">
+          <div className="absolute bottom-0 right-0 opacity-5 text-[120px] font-bold leading-none select-none pointer-events-none">P</div>
+          <h2 className="text-5xl font-bold text-on-surface mb-1">{roadmap.totalPacksNeeded}</h2>
+          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-4">{t('results.stats.packsNeeded')}</span>
+          <div className="bg-secondary-container/10 border border-secondary-container/30 px-3 py-1 rounded-full text-secondary-container text-[10px] font-bold uppercase">
+            ~{roadmap.totalGoldNeeded.toLocaleString()} {t('results.stats.gold')}
+          </div>
+        </div>
       </div>
 
-      {/* Mythic warning */}
-      {wildcardGap.mythic.gap > 0 && (
-        <div className="grimoire-card border-l-2 border-l-warning p-6 mb-12 bg-warning/5 animate-fade-in relative">
-          <p className="text-[10px] uppercase tracking-widest text-warning mb-2 font-bold">Advertencia de rareza mítica</p>
-          <p className="text-sm font-serif italic text-text-secondary">
-            Las ofrendas míticas no tienen un ciclo garantizado (aprox. 1 cada 72 sobres).
-            El augurio es conservador; prepárate para posibles demoras o intervenciones directas con gemas.
-          </p>
+      {/* Middle Row: Wildcards */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-4">
+          <h3 className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">{t('results.wildcards.missing')}</h3>
+          <div className="h-px bg-outline-variant/30 flex-1"></div>
         </div>
-      )}
-
-      {/* Budget suggestion banner */}
-      {budgetAnalysis?.shouldSuggestBudget && (
-        <div
-          className="grimoire-card-glow p-8 mb-12 cursor-pointer animate-slide-up group"
-          onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'budget' })}
-          style={{ animationDelay: '400ms' }}
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <span className="text-3xl opacity-50 font-serif">✦</span>
-              <div>
-                <p className="text-xs uppercase tracking-widest text-text-primary mb-1">¿Inscripciones demasiado costosas?</p>
-                <p className="text-sm font-serif italic text-text-secondary">
-                  Ahorra <span className="text-accent font-bold not-italic">{budgetAnalysis.totalWildcardsSaved}</span> wildcards
-                  examinando los sustitutos sugeridos.
-                </p>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {(['common', 'uncommon', 'rare', 'mythic'] as Rarity[]).map((rarity) => (
+            <div key={rarity} className="bg-surface-container-low rounded-lg p-4 border border-outline-variant/20 shadow-sm relative overflow-hidden group hover:border-outline-variant/50 transition-colors">
+              <div className={`absolute top-0 left-0 w-full h-1 ${getRarityBg(rarity)}`}></div>
+              <div className="flex justify-between items-center mb-4">
+                <div className={`flex items-center gap-2 ${getRarityColor(rarity)}`}>
+                  <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>
+                    {getRarityIcon(rarity)}
+                  </span>
+                  <span className="text-[10px] font-bold tracking-wider uppercase">{t(`rarity.${rarity}`)}</span>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-3xl font-bold text-on-surface">{wildcardGap[rarity].gap}</span>
+                <span className="text-[10px] font-bold text-on-surface-variant uppercase">{t('results.wildcards.missingLabel')}</span>
+              </div>
+              <div className="flex justify-between text-[10px] font-bold text-on-surface-variant/60">
+                <span>{t('results.wildcards.req')} {wildcardGap[rarity].needed}</span>
+                <span>{t('results.wildcards.own')} {wildcardGap[rarity].have}</span>
               </div>
             </div>
-            <span className="text-accent group-hover:translate-x-2 transition-transform opacity-50 text-2xl font-serif">→</span>
-          </div>
+          ))}
         </div>
-      )}
 
-      {/* Roadmap */}
-      <h3 className="text-xs uppercase tracking-widest text-text-primary mb-6 border-b border-border-subtle pb-2 animate-slide-up" style={{ animationDelay: '450ms' }}>
-        Lectura del Destino (Hoja de Ruta)
-      </h3>
-      <RoadmapTimeline weeks={roadmap.weeks} />
+        {/* Mythic Alert */}
+        {wildcardGap.mythic.gap > 0 && (
+          <div className="bg-primary-container/5 border border-primary-container/30 rounded-lg p-4 flex gap-4 items-start shadow-sm mt-4">
+            <span className="material-symbols-outlined text-primary-container text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
+            <div>
+              <h4 className="text-base font-bold text-primary-container uppercase tracking-tight mb-1">{t('results.wildcards.mythicWarning')}</h4>
+              <p className="text-sm text-on-surface-variant">
+                {t('results.wildcards.mythicWarningDesc')}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Bottom Section: Schedule */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-4">
+          <h3 className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">{t('results.schedule.title')}</h3>
+          <div className="h-px bg-outline-variant/30 flex-1"></div>
+        </div>
+        <RoadmapTimeline weeks={roadmap.weeks} />
+      </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-between mt-12 pt-8 border-t border-border-subtle">
-        <button onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'account' })} className="text-xs uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors">[ ← Alterar Tributos ]</button>
-        <button onClick={() => dispatch({ type: 'RESET' })} className="text-xs uppercase tracking-widest text-text-muted hover:text-error transition-colors">[ ✕ Descartar Tomo ]</button>
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-outline-variant/10">
+        <button 
+          onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'import' })} 
+          className="text-xs font-bold uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2"
+        >
+          <span className="material-symbols-outlined text-[16px]">edit</span> {t('results.actions.modifyInventory')}
+        </button>
+        <button 
+          onClick={() => dispatch({ type: 'RESET' })} 
+          className="text-xs font-bold uppercase tracking-wider text-error/60 hover:text-error transition-colors flex items-center gap-2"
+        >
+          <span className="material-symbols-outlined text-[16px]">close</span> {t('results.actions.discardAnalysis')}
+        </button>
       </div>
     </div>
   );

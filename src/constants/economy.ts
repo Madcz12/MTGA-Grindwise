@@ -69,7 +69,7 @@ export const ECONOMY = {
 
   /** Total gold from all 15 daily wins */
   get DAILY_WINS_MAX_GOLD() {
-    return this.DAILY_WIN_REWARDS.reduce((sum, g) => sum + g, 0);
+    return this.DAILY_WIN_REWARDS.reduce((sum, g) => sum + g, 0 as number);
   },
 
   /** Default assumed win rate in Ranked */

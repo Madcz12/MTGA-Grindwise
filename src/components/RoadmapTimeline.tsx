@@ -1,49 +1,74 @@
 import type { RoadmapWeek } from '../types';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface RoadmapTimelineProps {
   weeks: RoadmapWeek[];
 }
 
 export function RoadmapTimeline({ weeks }: RoadmapTimelineProps) {
+  const { t } = useLanguage();
+
   if (weeks.length === 0) {
     return (
-      <div className="grimoire-card p-8 text-center border-dashed">
-        <span className="text-4xl mb-4 block">🎉</span>
-        <p className="text-lg font-semibold text-text-primary">¡Ya tienes todo!</p>
-        <p className="text-sm text-text-secondary mt-1">No necesitas wildcards adicionales</p>
+      <div className="bg-surface-container-low p-12 text-center rounded-xl border border-outline-variant/20 shadow-sm">
+        <span className="material-symbols-outlined text-5xl mb-4 text-primary-container" style={{ fontVariationSettings: "'FILL' 1" }}>stars</span>
+        <p className="text-xl font-bold text-on-surface">{t('roadmapTimeline.success.title')}</p>
+        <p className="text-sm text-on-surface-variant mt-2">{t('roadmapTimeline.success.message')}</p>
       </div>
     );
   }
 
   return (
-    <div className="relative">
-      <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-accent via-mana-blue to-mana-black" />
-      <div className="space-y-4">
-        {weeks.map((week, index) => (
-          <div key={week.weekNumber} className="relative pl-14 animate-slide-up" style={{ animationDelay: `${index * 100}ms` }}>
-            <div className={`absolute left-4 w-5 h-5 rounded-full border-2 flex items-center justify-center ${week.isComplete ? 'bg-success border-success shadow-lg shadow-success/30' : 'bg-bg-card border-accent/50'}`}>
-              {week.isComplete && <span className="text-white text-xs">✓</span>}
+    <div className="bg-surface-container-low border border-outline-variant/20 rounded-xl overflow-hidden shadow-sm">
+      {weeks.map((week, index) => (
+        <div key={week.weekNumber} className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 border-b border-outline-variant/10 hover:bg-surface-variant/10 transition-colors animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
+          <div>
+            <div className="text-[10px] font-bold text-on-surface-variant mb-1 uppercase tracking-wider">
+              {week.isComplete ? t('roadmapTimeline.labels.finalWeek') : t('roadmapTimeline.labels.weekQuests', { week: week.weekNumber })}
             </div>
-            <div className={`grimoire-card p-5 ${week.isComplete ? 'border-success/30 bg-success/5' : ''}`}>
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="text-sm font-bold text-text-primary">Semana {week.weekNumber}</h4>
-                {week.isComplete && <span className="text-xs font-semibold text-success bg-success/10 px-2 py-0.5 rounded-full">🎯 ¡Meta!</span>}
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                <div><p className="text-xs text-text-muted">📜 Misiones</p><p className="font-mono font-semibold text-text-primary">{week.dailyQuestsCompleted}/día</p></div>
-                <div><p className="text-xs text-text-muted">⚔️ Victorias</p><p className="font-mono font-semibold text-text-primary">{week.weeklyWinsAchieved}/sem</p></div>
-                <div><p className="text-xs text-text-muted">🪙 Oro</p><p className="font-mono font-semibold text-text-primary">{week.goldEarned.toLocaleString()}</p></div>
-                <div><p className="text-xs text-text-muted">📦 Sobres</p><p className="font-mono font-semibold text-text-primary">{week.packsOpened} ({week.packsCumulative})</p></div>
-              </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {week.wildcardCumulative.mythic > 0 && <span className="text-xs px-2 py-0.5 rounded border bg-rarity-mythic/10 text-rarity-mythic border-rarity-mythic/30">✦ {week.wildcardCumulative.mythic}</span>}
-                {week.wildcardCumulative.rare > 0 && <span className="text-xs px-2 py-0.5 rounded border bg-rarity-rare/10 text-rarity-rare border-rarity-rare/30">★ {week.wildcardCumulative.rare}</span>}
-                {week.wildcardCumulative.uncommon > 0 && <span className="text-xs px-2 py-0.5 rounded border bg-rarity-uncommon/10 text-rarity-uncommon border-rarity-uncommon/30">◆ {week.wildcardCumulative.uncommon}</span>}
-              </div>
+            <div className="text-xl font-bold text-on-surface mb-1">
+              {week.dailyQuestsCompleted}{t('roadmapTimeline.labels.perDay')}
+            </div>
+            <div className="flex gap-2">
+              {week.wildcardCumulative.mythic > 0 && (
+                <span className="bg-error/20 text-error text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 font-bold">
+                  <span className="material-symbols-outlined text-[10px]" style={{ fontVariationSettings: "'FILL' 1" }}>local_fire_department</span>
+                  {week.wildcardCumulative.mythic}
+                </span>
+              )}
+              {week.wildcardCumulative.rare > 0 && (
+                <span className="bg-primary-container/20 text-primary-container text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 font-bold">
+                  <span className="material-symbols-outlined text-[10px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  {week.wildcardCumulative.rare}
+                </span>
+              )}
+              {week.wildcardCumulative.uncommon > 0 && (
+                <span className="bg-surface-variant text-on-surface-variant text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 font-bold">
+                  <span className="material-symbols-outlined text-[10px]" style={{ fontVariationSettings: "'FILL' 1" }}>diamond</span>
+                  {week.wildcardCumulative.uncommon}
+                </span>
+              )}
             </div>
           </div>
-        ))}
-      </div>
+          
+          <div>
+            <div className="text-[10px] font-bold text-on-surface-variant mb-1 uppercase tracking-wider">{t('roadmapTimeline.labels.wins')}</div>
+            <div className="text-xl font-bold text-on-surface">{week.weeklyWinsAchieved}{t('roadmapTimeline.labels.perWeek')}</div>
+          </div>
+          
+          <div>
+            <div className="text-[10px] font-bold text-on-surface-variant mb-1 uppercase tracking-wider">{t('roadmapTimeline.labels.gold')}</div>
+            <div className="text-xl font-bold text-secondary-fixed">+{week.goldEarned.toLocaleString()}</div>
+          </div>
+          
+          <div>
+            <div className="text-[10px] font-bold text-on-surface-variant mb-1 uppercase tracking-wider">{t('roadmapTimeline.labels.packs')}</div>
+            <div className="text-xl font-bold text-on-surface">
+              {week.packsOpened} <span className="text-on-surface-variant text-sm font-normal">({week.packsCumulative})</span>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

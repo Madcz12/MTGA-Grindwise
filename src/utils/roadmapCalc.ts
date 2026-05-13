@@ -42,7 +42,6 @@ export function generateRoadmap(
   const totalGoldNeeded = Math.max(0, totalGoldFromPacks - currentGold);
 
   // Calculate gold earned per week based on profile
-  const goldPerWeek = calculateWeeklyGold(profile);
 
   // Generate weeks
   const weeks: RoadmapWeek[] = [];
@@ -65,7 +64,7 @@ export function generateRoadmap(
     // Gold from daily wins
     const dailyWinsGold = ECONOMY.DAILY_WIN_REWARDS
       .slice(0, winsPerDay)
-      .reduce((sum, g) => sum + g, 0);
+      .reduce((sum, g) => sum + g, 0 as number);
     const winsGold = dailyWinsGold * profile.daysPerWeek;
 
     const goldThisWeek = questGold + winsGold;
@@ -140,26 +139,28 @@ function isComplete(accumulated: WildcardInventory, gap: WildcardGap): boolean {
   );
 }
 
-/**
- * Calculate estimated weekly gold based on play profile
- */
-function calculateWeeklyGold(profile: SessionProfile): number {
-  const questGold = profile.daysPerWeek * ECONOMY.DAILY_QUEST_GOLD_AVG;
-  const gamesPerDay = profile.hoursPerDay * ECONOMY.GAMES_PER_HOUR_BO1;
-  const winsPerDay = Math.min(15, Math.floor(gamesPerDay * ECONOMY.WIN_RATE_DEFAULT));
-  const dailyWinsGold = ECONOMY.DAILY_WIN_REWARDS.slice(0, winsPerDay).reduce((s, g) => s + g, 0);
-  return questGold + (dailyWinsGold * profile.daysPerWeek);
-}
+
 
 /**
  * Format weeks into a human-readable duration
  */
-export function formatDuration(weeks: number): string {
-  if (weeks === 0) return '¡Ya tienes todo!';
-  if (weeks === 1) return '~1 semana';
-  if (weeks < 5) return `~${weeks} semanas`;
+export function formatDuration(weeks: number, t: (key: string, params?: any) => string): string {
+  if (weeks === 0) return t('duration.ready');
+  if (weeks === 1) return t('duration.week_one');
+  if (weeks < 5) return t('duration.weeks_multiple', { count: weeks });
+  
   const months = Math.floor(weeks / 4);
   const remainingWeeks = weeks % 4;
-  if (remainingWeeks === 0) return `~${months} mes${months > 1 ? 'es' : ''}`;
-  return `~${months} mes${months > 1 ? 'es' : ''} y ${remainingWeeks} semana${remainingWeeks > 1 ? 's' : ''}`;
+  
+  let result = months === 1 
+    ? t('duration.month_one') 
+    : t('duration.months_multiple', { count: months });
+    
+  if (remainingWeeks > 0) {
+    result += remainingWeeks === 1
+      ? t('duration.and_week_one')
+      : t('duration.and_weeks_multiple', { count: remainingWeeks });
+  }
+  
+  return result;
 }

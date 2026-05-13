@@ -20,8 +20,8 @@ interface ProgressRingProps {
 export function ProgressRing({
   percentage,
   size = 120,
-  strokeWidth = 8,
-  color = '#d4af37',
+  strokeWidth = 10,
+  color = '#10b981',
   showText = true,
   label,
   valueText,
@@ -34,18 +34,17 @@ export function ProgressRing({
   const strokeDashoffset = circumference - (animatedPct / 100) * circumference;
 
   useEffect(() => {
-    // Animate from 0 to target percentage
     const timer = setTimeout(() => setAnimatedPct(percentage), 100);
     return () => clearTimeout(timer);
   }, [percentage]);
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-4">
       <div className="relative" style={{ width: size, height: size }}>
         <svg
           width={size}
           height={size}
-          className="transform -rotate-90"
+          className="transform -rotate-90 drop-shadow-[0_0_12px_rgba(16,185,129,0.2)]"
         >
           {/* Background ring */}
           <circle
@@ -53,7 +52,7 @@ export function ProgressRing({
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="rgba(255,255,255,0.06)"
+            stroke="rgba(15, 23, 42, 0.5)"
             strokeWidth={strokeWidth}
           />
           {/* Progress ring */}
@@ -69,16 +68,16 @@ export function ProgressRing({
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
             style={{
-              transition: 'stroke-dashoffset 1.2s ease-out',
-              filter: `drop-shadow(0 0 6px ${color}40)`,
+              transition: 'stroke-dashoffset 1.5s cubic-bezier(0.2, 0.8, 0.2, 1)',
+              filter: `drop-shadow(0 0 8px ${color}40)`,
             }}
           />
         </svg>
         {showText && (
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span
-              className="font-mono font-bold text-text-primary"
-              style={{ fontSize: size * 0.22 }}
+              className="font-black text-text-primary tracking-tighter"
+              style={{ fontSize: size * 0.25 }}
             >
               {valueText || `${Math.round(animatedPct)}%`}
             </span>
@@ -86,8 +85,9 @@ export function ProgressRing({
         )}
       </div>
       {label && (
-        <span className="text-sm text-text-secondary font-medium">{label}</span>
+        <span className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">{label}</span>
       )}
     </div>
   );
 }
+

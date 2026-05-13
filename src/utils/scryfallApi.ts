@@ -119,6 +119,9 @@ export async function enrichDeckEntries(
   let loadedCount = enriched.length;
 
   for (const chunk of chunks) {
+    // Track which entries in this chunk have been processed
+    const processed = new Set<number>();
+
     const identifiers = chunk.map(entry => {
       if (entry.setCode && entry.collectorNumber) {
         return { set: entry.setCode, collector_number: entry.collectorNumber };
@@ -157,36 +160,58 @@ export async function enrichDeckEntries(
 
       const data: ScryfallCollectionResponse = await response.json();
 
-      // Process found cards
+      // Process found cards — use flexible name matching for DFC support
       for (const card of data.data) {
         saveToCache(card);
-        const matchingEntry = chunk.find(e => {
+        const matchIdx = chunk.findIndex((e, idx) => {
+          if (processed.has(idx)) return false;
           if (e.setCode && e.collectorNumber) {
             return e.setCode === card.set && e.collectorNumber === card.collector_number;
           }
-          return e.name.toLowerCase() === card.name.toLowerCase();
+          // Flexible name matching: exact match OR Scryfall DFC name starts with entry name
+          const eName = e.name.toLowerCase();
+          const cName = card.name.toLowerCase();
+          return eName === cName || cName.startsWith(eName + ' //') || cName.startsWith(eName + ' /');
         });
-        if (matchingEntry) {
-          enriched.push(applyCardData(matchingEntry, card));
+        if (matchIdx !== -1) {
+          processed.add(matchIdx);
+          enriched.push(applyCardData(chunk[matchIdx], card));
         }
       }
 
       // Process not-found cards — retry by name
       for (const nf of data.not_found) {
-        const matchingEntry = chunk.find(e => {
+        const matchIdx = chunk.findIndex((e, idx) => {
+          if (processed.has(idx)) return false;
           if (e.setCode && e.collectorNumber) {
             return e.setCode === nf.set && e.collectorNumber === nf.collector_number;
           }
           return e.name.toLowerCase() === (nf.name || '').toLowerCase();
         });
-        if (matchingEntry) {
-          const fallback = await fetchByName(matchingEntry.name);
+        if (matchIdx !== -1) {
+          processed.add(matchIdx);
+          const fallback = await fetchByName(chunk[matchIdx].name);
           if (fallback) {
-            enriched.push(applyCardData(matchingEntry, fallback));
+            enriched.push(applyCardData(chunk[matchIdx], fallback));
             saveToCache(fallback);
           } else {
-            notFound.push(matchingEntry.name);
-            enriched.push(matchingEntry);
+            notFound.push(chunk[matchIdx].name);
+            enriched.push(chunk[matchIdx]);
+          }
+        }
+      }
+
+      // Catch any entries that weren't matched by data.data or data.not_found
+      for (let idx = 0; idx < chunk.length; idx++) {
+        if (!processed.has(idx)) {
+          processed.add(idx);
+          const fallback = await fetchByName(chunk[idx].name);
+          if (fallback) {
+            enriched.push(applyCardData(chunk[idx], fallback));
+            saveToCache(fallback);
+          } else {
+            notFound.push(chunk[idx].name);
+            enriched.push(chunk[idx]);
           }
         }
       }
@@ -263,11 +288,17 @@ function applyCardData(entry: DeckEntry, card: ScryfallCard): DeckEntry {
     card.image_uris?.small ||
     '';
 
+  const cardImageUri =
+    card.image_uris?.normal ||
+    card.card_faces?.[0]?.image_uris?.normal ||
+    '';
+
   return {
     ...entry,
     rarity: mapRarity(card.rarity),
     isLegalStandard: card.legalities.standard === 'legal',
     imageUri,
+    cardImageUri,
     manaCost: card.mana_cost || '',
     typeLine: card.type_line || '',
   };
