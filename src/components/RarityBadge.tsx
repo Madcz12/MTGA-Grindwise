@@ -1,4 +1,5 @@
 import type { Rarity } from '../types';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface RarityBadgeProps {
   rarity: Rarity;
@@ -6,27 +7,23 @@ interface RarityBadgeProps {
   showLabel?: boolean;
 }
 
-const RARITY_CONFIG: Record<Rarity, { label: string; color: string; bg: string; icon: string }> = {
+const RARITY_CONFIG: Record<Rarity, { color: string; bg: string; icon: string }> = {
   common: {
-    label: 'Común',
     color: 'text-slate-400',
     bg: 'bg-slate-400/10 border-slate-400/20',
     icon: '●',
   },
   uncommon: {
-    label: 'Infrecuente',
     color: 'text-slate-200',
     bg: 'bg-slate-200/10 border-slate-200/20',
     icon: '◆',
   },
   rare: {
-    label: 'Rara',
     color: 'text-amber-400',
     bg: 'bg-amber-400/10 border-amber-400/20',
     icon: '★',
   },
   mythic: {
-    label: 'Mítica',
     color: 'text-orange-500',
     bg: 'bg-orange-500/10 border-orange-500/20',
     icon: '✦',
@@ -40,6 +37,7 @@ const SIZE_CLASSES = {
 };
 
 export function RarityBadge({ rarity, size = 'md', showLabel = true }: RarityBadgeProps) {
+  const { t } = useLanguage();
   const config = RARITY_CONFIG[rarity];
 
   return (
@@ -47,8 +45,7 @@ export function RarityBadge({ rarity, size = 'md', showLabel = true }: RarityBad
       className={`inline-flex items-center gap-1.5 border font-black uppercase tracking-widest leading-none ${config.bg} ${config.color} ${SIZE_CLASSES[size]}`}
     >
       <span className="text-sm">{config.icon}</span>
-      {showLabel && <span>{config.label}</span>}
+      {showLabel && <span>{t(`rarity.${rarity}`)}</span>}
     </span>
   );
 }
-

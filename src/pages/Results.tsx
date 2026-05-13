@@ -3,17 +3,19 @@ import { RoadmapTimeline } from '../components/RoadmapTimeline';
 import { calculateCompletionPercent } from '../utils/wildcardCalc';
 import { formatDuration } from '../utils/roadmapCalc';
 import type { Rarity } from '../types';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function Results() {
   const { wildcardGap, roadmap } = useDeckState();
   const dispatch = useDeckDispatch();
+  const { t } = useLanguage();
 
   if (!wildcardGap || !roadmap) {
     return (
       <div className="text-center py-32 animate-fade-in">
-        <p className="text-sm font-medium text-on-surface-variant">El pergamino está en blanco. Inicia tu lectura.</p>
+        <p className="text-sm font-medium text-on-surface-variant">{t('results.empty.message')}</p>
         <button onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'import' })} className="px-8 py-2 rounded bg-primary-container text-on-primary-container text-xs font-bold uppercase tracking-wider mt-8 btn-shimmer">
-          Comenzar
+          {t('results.empty.start')}
         </button>
       </div>
     );
@@ -52,8 +54,8 @@ export function Results() {
     <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8 md:py-12 space-y-12 animate-slide-up">
       {/* Page Header */}
       <div className="text-center space-y-2">
-        <h1 className="text-4xl md:text-5xl font-bold text-on-surface">Hoja de Ruta</h1>
-        <p className="text-base text-on-surface-variant">El camino proyectado para completar tu mazo</p>
+        <h1 className="text-4xl md:text-5xl font-bold text-on-surface">{t('results.header.title')}</h1>
+        <p className="text-base text-on-surface-variant">{t('results.header.subtitle')}</p>
       </div>
 
       {/* Top Row Stats */}
@@ -71,23 +73,23 @@ export function Results() {
               <span className="text-4xl font-bold text-on-surface">{completion}%</span>
             </div>
           </div>
-          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Completado</span>
+          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">{t('results.stats.completed')}</span>
         </div>
 
         {/* Estimated Time Card */}
         <div className="bg-surface-container-low backdrop-blur-md rounded-xl p-8 border border-outline-variant/30 shadow-sm flex flex-col justify-center relative overflow-hidden">
           <div className="absolute bottom-0 right-0 opacity-5 text-[120px] font-bold leading-none select-none pointer-events-none">W</div>
-          <h2 className="text-4xl font-bold text-on-surface mb-2">~{formatDuration(roadmap.totalWeeks)}</h2>
-          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mt-auto">Tiempo Estimado</span>
+          <h2 className="text-4xl font-bold text-on-surface mb-2">{formatDuration(roadmap.totalWeeks, t)}</h2>
+          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mt-auto">{t('results.stats.estimatedTime')}</span>
         </div>
 
         {/* Packs Needed Card */}
         <div className="bg-surface-container-low backdrop-blur-md rounded-xl p-8 border border-outline-variant/30 shadow-sm flex flex-col justify-center items-center text-center relative overflow-hidden">
           <div className="absolute bottom-0 right-0 opacity-5 text-[120px] font-bold leading-none select-none pointer-events-none">P</div>
           <h2 className="text-5xl font-bold text-on-surface mb-1">{roadmap.totalPacksNeeded}</h2>
-          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-4">Sobres Necesarios</span>
+          <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-4">{t('results.stats.packsNeeded')}</span>
           <div className="bg-secondary-container/10 border border-secondary-container/30 px-3 py-1 rounded-full text-secondary-container text-[10px] font-bold uppercase">
-            ~{roadmap.totalGoldNeeded.toLocaleString()} ORO
+            ~{roadmap.totalGoldNeeded.toLocaleString()} {t('results.stats.gold')}
           </div>
         </div>
       </div>
@@ -95,7 +97,7 @@ export function Results() {
       {/* Middle Row: Wildcards */}
       <div className="space-y-4">
         <div className="flex items-center gap-4">
-          <h3 className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Comodines Faltantes</h3>
+          <h3 className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">{t('results.wildcards.missing')}</h3>
           <div className="h-px bg-outline-variant/30 flex-1"></div>
         </div>
         
@@ -108,16 +110,16 @@ export function Results() {
                   <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>
                     {getRarityIcon(rarity)}
                   </span>
-                  <span className="text-[10px] font-bold tracking-wider uppercase">{rarity}</span>
+                  <span className="text-[10px] font-bold tracking-wider uppercase">{t(`rarity.${rarity}`)}</span>
                 </div>
               </div>
               <div className="flex items-baseline gap-2 mb-2">
                 <span className="text-3xl font-bold text-on-surface">{wildcardGap[rarity].gap}</span>
-                <span className="text-[10px] font-bold text-on-surface-variant uppercase">Faltantes</span>
+                <span className="text-[10px] font-bold text-on-surface-variant uppercase">{t('results.wildcards.missingLabel')}</span>
               </div>
               <div className="flex justify-between text-[10px] font-bold text-on-surface-variant/60">
-                <span>REQ: {wildcardGap[rarity].needed}</span>
-                <span>OWN: {wildcardGap[rarity].have}</span>
+                <span>{t('results.wildcards.req')} {wildcardGap[rarity].needed}</span>
+                <span>{t('results.wildcards.own')} {wildcardGap[rarity].have}</span>
               </div>
             </div>
           ))}
@@ -128,9 +130,9 @@ export function Results() {
           <div className="bg-primary-container/5 border border-primary-container/30 rounded-lg p-4 flex gap-4 items-start shadow-sm mt-4">
             <span className="material-symbols-outlined text-primary-container text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
             <div>
-              <h4 className="text-base font-bold text-primary-container uppercase tracking-tight mb-1">Advertencia de Rareza Mítica</h4>
+              <h4 className="text-base font-bold text-primary-container uppercase tracking-tight mb-1">{t('results.wildcards.mythicWarning')}</h4>
               <p className="text-sm text-on-surface-variant">
-                Las wildcards míticas no tienen un ciclo garantizado (aprox. 1 cada 72 sobres). La proyección es conservadora; podrías necesitar abrir más sobres o usar gemas.
+                {t('results.wildcards.mythicWarningDesc')}
               </p>
             </div>
           </div>
@@ -140,7 +142,7 @@ export function Results() {
       {/* Bottom Section: Schedule */}
       <div className="space-y-4">
         <div className="flex items-center gap-4">
-          <h3 className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Cronograma de Adquisición</h3>
+          <h3 className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">{t('results.schedule.title')}</h3>
           <div className="h-px bg-outline-variant/30 flex-1"></div>
         </div>
         <RoadmapTimeline weeks={roadmap.weeks} />
@@ -149,19 +151,18 @@ export function Results() {
       {/* Actions */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-outline-variant/10">
         <button 
-          onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'account' })} 
+          onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'import' })} 
           className="text-xs font-bold uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2"
         >
-          <span className="material-symbols-outlined text-[16px]">edit</span> Modificar Inventario
+          <span className="material-symbols-outlined text-[16px]">edit</span> {t('results.actions.modifyInventory')}
         </button>
         <button 
           onClick={() => dispatch({ type: 'RESET' })} 
           className="text-xs font-bold uppercase tracking-wider text-error/60 hover:text-error transition-colors flex items-center gap-2"
         >
-          <span className="material-symbols-outlined text-[16px]">close</span> Descartar Análisis
+          <span className="material-symbols-outlined text-[16px]">close</span> {t('results.actions.discardAnalysis')}
         </button>
       </div>
     </div>
   );
 }
-

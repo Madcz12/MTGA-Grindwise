@@ -1,5 +1,7 @@
+import { useState, useRef } from 'react';
 import type { DeckEntry } from '../types';
 import { RarityBadge } from './RarityBadge';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface CardRowProps {
   entry: DeckEntry;
@@ -8,8 +10,32 @@ interface CardRowProps {
 }
 
 export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
+  const { t } = useLanguage();
   const isFullyOwned = copiesOwned >= entry.quantity;
   const isIllegal = entry.isLegalStandard === false;
+
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewPos, setPreviewPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const thumbnailRef = useRef<HTMLDivElement>(null);
+
+  const previewSrc = entry.cardImageUri || entry.imageUri;
+
+  const handleMouseEnter = () => {
+    if (!previewSrc) return;
+    if (thumbnailRef.current) {
+      const rect = thumbnailRef.current.getBoundingClientRect();
+      // Position the card preview to the right of the thumbnail
+      setPreviewPos({
+        x: rect.right + 12,
+        y: rect.top + rect.height / 2,
+      });
+    }
+    setShowPreview(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowPreview(false);
+  };
 
   return (
     <div
@@ -22,7 +48,12 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
       }`}
     >
       {/* Card art thumbnail */}
-      <div className="w-16 h-12 rounded-lg border border-slate-800 overflow-hidden bg-slate-900 flex-shrink-0 relative shadow-inner">
+      <div
+        ref={thumbnailRef}
+        className="w-16 h-12 rounded-lg border border-slate-800 overflow-hidden bg-slate-900 flex-shrink-0 relative shadow-inner cursor-pointer"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         {entry.imageUri ? (
           <img
             src={entry.imageUri}
@@ -37,6 +68,23 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
         )}
       </div>
 
+      {/* Hover card preview (portal-style fixed position) */}
+      {showPreview && previewSrc && (
+        <div
+          className="card-preview-popup"
+          style={{
+            left: `${previewPos.x}px`,
+            top: `${previewPos.y}px`,
+          }}
+        >
+          <img
+            src={previewSrc}
+            alt={entry.name}
+            className="w-full h-full object-contain rounded-xl"
+          />
+        </div>
+      )}
+
       {/* Card info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-3 mb-1.5">
@@ -45,12 +93,12 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
           </span>
           {isIllegal && (
             <span className="text-[10px] font-black uppercase tracking-widest text-red-400 bg-red-400/10 border border-red-400/20 px-1.5 py-0.5 rounded-md">
-              No legal
+              {t('cardRow.illegal')}
             </span>
           )}
           {entry.section === 'sideboard' && (
             <span className="text-[10px] font-black uppercase tracking-widest text-blue-400 bg-blue-400/10 border border-blue-400/20 px-1.5 py-0.5 rounded-md">
-              SB
+              {t('cardRow.sb')}
             </span>
           )}
         </div>
@@ -65,7 +113,7 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
 
       {/* Owned selector */}
       <div className="flex items-center gap-4 flex-shrink-0">
-        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 whitespace-nowrap">Propiedad:</label>
+        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 whitespace-nowrap">{t('cardRow.ownership')}</label>
         <div className="flex gap-1.5">
           {Array.from({ length: entry.quantity + 1 }, (_, i) => (
             <button
@@ -85,4 +133,3 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
     </div>
   );
 }
-

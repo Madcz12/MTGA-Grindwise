@@ -4,20 +4,22 @@ import { WildcardCounter } from '../components/WildcardCounter';
 import { RoadmapTimeline } from '../components/RoadmapTimeline';
 import { generateRoadmap, formatDuration } from '../utils/roadmapCalc';
 import type { Rarity } from '../types';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function BudgetView() {
   const { budgetAnalysis, sessionProfile, currentGold } = useDeckState();
   const dispatch = useDeckDispatch();
+  const { t } = useLanguage();
 
   if (!budgetAnalysis || !budgetAnalysis.shouldSuggestBudget) {
     return (
       <div className="text-center py-20 animate-fade-in">
-        <p className="text-text-secondary font-medium">No hay sugerencias budget disponibles.</p>
+        <p className="text-text-secondary font-medium">{t('budgetView.empty.message')}</p>
         <button 
           onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'results' })} 
           className="btn-modern-primary mt-8"
         >
-          ← Volver a Resultados
+          {t('budgetView.empty.back')}
         </button>
       </div>
     );
@@ -30,8 +32,8 @@ export function BudgetView() {
   return (
     <div className="max-w-5xl mx-auto px-4">
       <div className="text-center mb-16 animate-slide-up">
-        <h2 className="text-4xl md:text-5xl font-black tracking-tight text-text-primary mb-4">Versión Budget</h2>
-        <p className="text-text-secondary font-medium">Alternativas más accesibles para mitigar el costo del mazo</p>
+        <h2 className="text-4xl md:text-5xl font-black tracking-tight text-text-primary mb-4">{t('budgetView.header.title')}</h2>
+        <p className="text-text-secondary font-medium">{t('budgetView.header.subtitle')}</p>
       </div>
 
       {/* Savings highlight */}
@@ -41,15 +43,15 @@ export function BudgetView() {
         <span className="text-7xl font-black text-emerald-500 block mb-4 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)] group-hover:scale-110 transition-transform duration-500">
           {totalWildcardsSaved}
         </span>
-        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-text-primary mb-6">Comodines Ahorrados</p>
+        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-text-primary mb-6">{t('budgetView.savings.savedWildcards')}</p>
         
         <div className="inline-flex flex-col md:flex-row items-center gap-4 px-6 py-3 bg-slate-950/50 rounded-2xl border border-slate-800">
           <p className="text-sm font-medium text-slate-400">
-            Nuevo tiempo estimado: <span className="text-emerald-400 font-black">{formatDuration(budgetRoadmap.totalWeeks)}</span>
+            {t('budgetView.savings.newTime')} <span className="text-emerald-400 font-black">{formatDuration(budgetRoadmap.totalWeeks, t)}</span>
           </p>
           <div className="hidden md:block w-px h-4 bg-slate-800" />
           <p className="text-sm font-medium text-slate-500">
-            Original: <span className="text-slate-300 font-bold">{formatDuration(originalRoadmap.totalWeeks)}</span>
+            {t('budgetView.savings.originalTime')} <span className="text-slate-300 font-bold">{formatDuration(originalRoadmap.totalWeeks, t)}</span>
           </p>
         </div>
       </div>
@@ -57,7 +59,7 @@ export function BudgetView() {
       {/* Substitution table */}
       <div className="mb-16">
         <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 mb-8 flex items-center gap-4">
-          Sustituciones Sugeridas
+          {t('budgetView.substitutions.title')}
           <div className="h-px flex-1 bg-slate-800"></div>
         </h3>
         
@@ -100,7 +102,9 @@ export function BudgetView() {
                       <p className="text-sm font-black text-emerald-400 truncate">{sub.substitute.name}</p>
                       <div className="flex items-center gap-3 mt-1.5">
                         <RarityBadge rarity={sub.substitute.rarity} size="sm" />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-slate-950 bg-emerald-500 px-2 py-0.5 rounded shadow-lg shadow-emerald-500/20">Ahorra {sub.wildcardsSaved.count}</span>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-slate-950 bg-emerald-500 px-2 py-0.5 rounded shadow-lg shadow-emerald-500/20">
+                          {t('budgetView.substitutions.saves', { count: sub.wildcardsSaved.count })}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -115,10 +119,9 @@ export function BudgetView() {
       <div className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-8 mb-16 animate-fade-in flex gap-6 items-start">
         <div className="text-3xl">ℹ️</div>
         <div>
-          <p className="text-xs font-black uppercase tracking-widest text-amber-500 mb-2">Consideraciones Budget</p>
+          <p className="text-xs font-black uppercase tracking-widest text-amber-500 mb-2">{t('budgetView.disclaimer.title')}</p>
           <p className="text-sm font-medium text-slate-400 leading-relaxed">
-            Estas sustituciones son orientativas y podrían alterar la sinergia original. 
-            Se seleccionan por tipo y coste, pero la eficacia en el meta actual puede variar.
+            {t('budgetView.disclaimer.message')}
           </p>
         </div>
       </div>
@@ -126,7 +129,7 @@ export function BudgetView() {
       {/* Budget wildcard gap */}
       <div className="mb-16">
         <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 mb-8 flex items-center gap-4">
-          Costo Modificado
+          {t('budgetView.cost.title')}
           <div className="h-px flex-1 bg-slate-800"></div>
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -139,7 +142,7 @@ export function BudgetView() {
       {/* Budget roadmap */}
       <div className="mb-20">
         <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 mb-12 flex items-center gap-4">
-          Nueva Hoja de Ruta
+          {t('budgetView.roadmap.title')}
           <div className="h-px flex-1 bg-slate-800"></div>
         </h3>
         <RoadmapTimeline weeks={budgetRoadmap.weeks} />
@@ -151,17 +154,16 @@ export function BudgetView() {
           onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'results' })} 
           className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 hover:text-text-primary transition-colors flex items-center gap-2"
         >
-          <span className="text-base">←</span> Volver a Resultados
+          {t('budgetView.actions.back')}
         </button>
         
         <button 
           onClick={() => dispatch({ type: 'RESET' })} 
           className="text-xs font-bold uppercase tracking-[0.2em] text-red-500/60 hover:text-red-500 transition-colors flex items-center gap-2"
         >
-          <span className="text-lg">✕</span> Descartar Análisis
+          {t('budgetView.actions.discard')}
         </button>
       </div>
     </div>
   );
 }
-

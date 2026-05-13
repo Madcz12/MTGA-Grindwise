@@ -78,6 +78,11 @@
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--color-background);
+  background-image: url('/grindwise-background.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--color-on-surface);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -132,4 +137,32 @@ button, a {
   outline: none;
   border-color: var(--color-secondary-container);
   box-shadow: 0 0 8px var(--color-secondary-container);
+}
+
+/* ─── Card Hover Preview ─────────────────────────────────────────── */
+.card-preview-popup {
+  position: fixed;
+  width: 250px;
+  height: 350px;
+  transform: translateY(-50%);
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 0 20px rgba(0, 0, 0, 0.7),
+    0 0 60px rgba(0, 0, 0, 0.4),
+    0 0 4px rgba(232, 195, 61, 0.3);
+  animation: card-preview-in 0.2s ease-out;
+}
+
+@keyframes card-preview-in {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
 }

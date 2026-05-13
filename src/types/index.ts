@@ -14,6 +14,7 @@ export interface DeckEntry {
   rarity?: Rarity;
   isLegalStandard?: boolean;
   imageUri?: string;
+  cardImageUri?: string;   // Full card image (Scryfall "normal") for hover preview
   manaCost?: string;
   typeLine?: string;
 }

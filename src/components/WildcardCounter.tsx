@@ -1,5 +1,6 @@
 import type { Rarity } from '../types';
 import { useEffect, useState } from 'react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface WildcardCounterProps {
   rarity: Rarity;
@@ -37,6 +38,7 @@ const RARITY_STYLES: Record<Rarity, { icon: string; color: string; accent: strin
 
 export function WildcardCounter({ rarity, needed, have, gap }: WildcardCounterProps) {
   const [animatedGap, setAnimatedGap] = useState(0);
+  const { t } = useLanguage();
   const style = RARITY_STYLES[rarity];
   const isComplete = gap === 0;
 
@@ -61,7 +63,7 @@ export function WildcardCounter({ rarity, needed, have, gap }: WildcardCounterPr
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <span className={`text-xl ${style.color} drop-shadow-[0_0_8px_rgba(0,0,0,0.5)]`}>{style.icon}</span>
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">{rarity}</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">{t(`rarity.${rarity}`)}</span>
           </div>
           {isComplete && (
             <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-slate-950 text-[10px] shadow-lg shadow-emerald-500/20">
@@ -77,7 +79,7 @@ export function WildcardCounter({ rarity, needed, have, gap }: WildcardCounterPr
           >
             {animatedGap}
           </span>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Faltantes</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{t('wildcardCounter.missing')}</span>
         </div>
 
         {/* Progress bar */}
@@ -92,12 +94,11 @@ export function WildcardCounter({ rarity, needed, have, gap }: WildcardCounterPr
 
         {/* Details */}
         <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-slate-600">
-          <span>Req: {needed}</span>
+          <span>{t('wildcardCounter.req')} {needed}</span>
           <div className="w-1 h-1 rounded-full bg-slate-800"></div>
-          <span>Own: {have}</span>
+          <span>{t('wildcardCounter.own')} {have}</span>
         </div>
       </div>
     </div>
   );
 }
-

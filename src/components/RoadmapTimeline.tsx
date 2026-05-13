@@ -1,16 +1,19 @@
 import type { RoadmapWeek } from '../types';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface RoadmapTimelineProps {
   weeks: RoadmapWeek[];
 }
 
 export function RoadmapTimeline({ weeks }: RoadmapTimelineProps) {
+  const { t } = useLanguage();
+
   if (weeks.length === 0) {
     return (
       <div className="bg-surface-container-low p-12 text-center rounded-xl border border-outline-variant/20 shadow-sm">
         <span className="material-symbols-outlined text-5xl mb-4 text-primary-container" style={{ fontVariationSettings: "'FILL' 1" }}>stars</span>
-        <p className="text-xl font-bold text-on-surface">¡Objetivo Alcanzado!</p>
-        <p className="text-sm text-on-surface-variant mt-2">No necesitas comodines adicionales para este mazo.</p>
+        <p className="text-xl font-bold text-on-surface">{t('roadmapTimeline.success.title')}</p>
+        <p className="text-sm text-on-surface-variant mt-2">{t('roadmapTimeline.success.message')}</p>
       </div>
     );
   }
@@ -21,10 +24,10 @@ export function RoadmapTimeline({ weeks }: RoadmapTimelineProps) {
         <div key={week.weekNumber} className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 border-b border-outline-variant/10 hover:bg-surface-variant/10 transition-colors animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
           <div>
             <div className="text-[10px] font-bold text-on-surface-variant mb-1 uppercase tracking-wider">
-              {week.isComplete ? 'SEMANA FINAL' : `SEMANA ${week.weekNumber} / MISIONES`}
+              {week.isComplete ? t('roadmapTimeline.labels.finalWeek') : t('roadmapTimeline.labels.weekQuests', { week: week.weekNumber })}
             </div>
             <div className="text-xl font-bold text-on-surface mb-1">
-              {week.dailyQuestsCompleted}/día
+              {week.dailyQuestsCompleted}{t('roadmapTimeline.labels.perDay')}
             </div>
             <div className="flex gap-2">
               {week.wildcardCumulative.mythic > 0 && (
@@ -49,17 +52,17 @@ export function RoadmapTimeline({ weeks }: RoadmapTimelineProps) {
           </div>
           
           <div>
-            <div className="text-[10px] font-bold text-on-surface-variant mb-1 uppercase tracking-wider">VICTORIAS</div>
-            <div className="text-xl font-bold text-on-surface">{week.weeklyWinsAchieved}/sem</div>
+            <div className="text-[10px] font-bold text-on-surface-variant mb-1 uppercase tracking-wider">{t('roadmapTimeline.labels.wins')}</div>
+            <div className="text-xl font-bold text-on-surface">{week.weeklyWinsAchieved}{t('roadmapTimeline.labels.perWeek')}</div>
           </div>
           
           <div>
-            <div className="text-[10px] font-bold text-on-surface-variant mb-1 uppercase tracking-wider">ORO</div>
+            <div className="text-[10px] font-bold text-on-surface-variant mb-1 uppercase tracking-wider">{t('roadmapTimeline.labels.gold')}</div>
             <div className="text-xl font-bold text-secondary-fixed">+{week.goldEarned.toLocaleString()}</div>
           </div>
           
           <div>
-            <div className="text-[10px] font-bold text-on-surface-variant mb-1 uppercase tracking-wider">SOBRES</div>
+            <div className="text-[10px] font-bold text-on-surface-variant mb-1 uppercase tracking-wider">{t('roadmapTimeline.labels.packs')}</div>
             <div className="text-xl font-bold text-on-surface">
               {week.packsOpened} <span className="text-on-surface-variant text-sm font-normal">({week.packsCumulative})</span>
             </div>
@@ -69,4 +72,3 @@ export function RoadmapTimeline({ weeks }: RoadmapTimelineProps) {
     </div>
   );
 }
-

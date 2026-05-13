@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useDeckState, useDeckDispatch } from '../hooks/useDeckState';
 import { CardRow } from '../components/CardRow';
 import { calculateWildcardGap } from '../utils/wildcardCalc';
@@ -19,6 +20,7 @@ export function AccountState() {
   const state = useDeckState();
   const dispatch = useDeckDispatch();
   const { enrichedEntries, wildcardInventory, ownedCards, currentGold, sessionProfile } = state;
+  const [goldText, setGoldText] = useState(currentGold > 0 ? String(currentGold) : '');
 
   const maindeckEntries = enrichedEntries.filter(e => e.section === 'deck');
   const sideboardEntries = enrichedEntries.filter(e => e.section === 'sideboard');
@@ -88,11 +90,18 @@ export function AccountState() {
         <div className="lg:col-span-1 card-modern p-8 animate-slide-up" style={{ animationDelay: '150ms' }}>
           <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6">🪙 Oro Actual</h3>
           <input
-            type="number"
-            min={0}
-            step={100}
-            value={currentGold}
-            onChange={e => dispatch({ type: 'SET_CURRENT_GOLD', gold: parseInt(e.target.value) || 0 })}
+            type="text"
+            inputMode="numeric"
+            value={goldText}
+            onChange={e => {
+              const raw = e.target.value.replace(/[^0-9]/g, '');
+              setGoldText(raw);
+              dispatch({ type: 'SET_CURRENT_GOLD', gold: parseInt(raw) || 0 });
+            }}
+            onBlur={() => {
+              const num = parseInt(goldText) || 0;
+              setGoldText(num > 0 ? String(num) : '');
+            }}
             className="input-modern text-xl font-bold"
             placeholder="0"
           />
