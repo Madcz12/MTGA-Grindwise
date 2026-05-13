@@ -42,7 +42,6 @@ export function generateRoadmap(
   const totalGoldNeeded = Math.max(0, totalGoldFromPacks - currentGold);
 
   // Calculate gold earned per week based on profile
-  const goldPerWeek = calculateWeeklyGold(profile);
 
   // Generate weeks
   const weeks: RoadmapWeek[] = [];
@@ -65,7 +64,7 @@ export function generateRoadmap(
     // Gold from daily wins
     const dailyWinsGold = ECONOMY.DAILY_WIN_REWARDS
       .slice(0, winsPerDay)
-      .reduce((sum, g) => sum + g, 0);
+      .reduce((sum, g) => sum + g, 0 as number);
     const winsGold = dailyWinsGold * profile.daysPerWeek;
 
     const goldThisWeek = questGold + winsGold;
@@ -140,16 +139,7 @@ function isComplete(accumulated: WildcardInventory, gap: WildcardGap): boolean {
   );
 }
 
-/**
- * Calculate estimated weekly gold based on play profile
- */
-function calculateWeeklyGold(profile: SessionProfile): number {
-  const questGold = profile.daysPerWeek * ECONOMY.DAILY_QUEST_GOLD_AVG;
-  const gamesPerDay = profile.hoursPerDay * ECONOMY.GAMES_PER_HOUR_BO1;
-  const winsPerDay = Math.min(15, Math.floor(gamesPerDay * ECONOMY.WIN_RATE_DEFAULT));
-  const dailyWinsGold = ECONOMY.DAILY_WIN_REWARDS.slice(0, winsPerDay).reduce((s, g) => s + g, 0);
-  return questGold + (dailyWinsGold * profile.daysPerWeek);
-}
+
 
 /**
  * Format weeks into a human-readable duration
