@@ -238,8 +238,8 @@ export function ImportDeck() {
                 {enrichedEntries.map((card, idx) => {
                   const previewSrc = card.cardImageUri || card.imageUri;
                   return (
-                    <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-surface-dim border border-outline-variant/20 hover:border-outline-variant/50 transition-colors">
-                      <div className="flex items-center gap-4">
+                    <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 gap-3 sm:gap-4 rounded-lg bg-surface-dim border border-outline-variant/20 hover:border-outline-variant/50 transition-colors">
+                      <div className="flex items-center gap-4 min-w-0">
                         <div
                           ref={(el) => { if (el) cardImageRefs.current.set(idx, el); }}
                           className="flex-shrink-0 cursor-pointer"
@@ -261,16 +261,16 @@ export function ImportDeck() {
                             </div>
                           )}
                         </div>
-                        <div>
-                          <h4 className="text-base font-bold text-on-surface">{card.name}</h4>
+                        <div className="min-w-0">
+                          <h4 className="text-base font-bold text-on-surface truncate" title={card.name}>{card.name}</h4>
                           <span className={`inline-block px-2 py-0.5 mt-1 rounded text-[10px] font-bold uppercase tracking-wider ${card.isLegalStandard ? 'bg-secondary-container/20 text-secondary-container' : 'bg-error/20 text-error'}`}>
                             {card.isLegalStandard ? t('importDeck.cards.standardLegal') : t('importDeck.cards.illegalStandard')}
                           </span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-4 flex-shrink-0">
+                      <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto mt-1 sm:mt-0 pt-3 sm:pt-0 border-t border-outline-variant/10 sm:border-t-0 flex-shrink-0">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant whitespace-nowrap">{t('importDeck.cards.ownership')}</label>
-                        <div className="flex gap-1.5">
+                        <div className="flex gap-1.5 flex-wrap">
                           {Array.from({ length: card.quantity + 1 }, (_, i) => {
                             const copiesOwned = ownedCards.get(getCardKey(card)) || 0;
                             return (
