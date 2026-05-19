@@ -114,21 +114,43 @@ export function CardRow({ entry, copiesOwned, onOwnedChange }: CardRowProps) {
       {/* Owned selector */}
       <div className="flex items-center gap-4 flex-shrink-0">
         <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 whitespace-nowrap">{t('cardRow.ownership')}</label>
-        <div className="flex gap-1.5">
-          {Array.from({ length: entry.quantity + 1 }, (_, i) => (
+        {entry.quantity <= 4 ? (
+          <div className="flex gap-1.5">
+            {Array.from({ length: entry.quantity + 1 }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => onOwnedChange(i)}
+                className={`w-9 h-9 rounded-lg border flex items-center justify-center text-xs font-bold transition-all duration-200 ${
+                  i === copiesOwned
+                    ? 'bg-emerald-500 border-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                    : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-600'
+                }`}
+              >
+                {i}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="flex gap-1.5 items-center">
             <button
-              key={i}
-              onClick={() => onOwnedChange(i)}
-              className={`w-9 h-9 rounded-lg border flex items-center justify-center text-xs font-bold transition-all duration-200 ${
-                i === copiesOwned
-                  ? 'bg-emerald-500 border-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                  : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-600'
-              }`}
+              onClick={() => onOwnedChange(Math.max(0, copiesOwned - 1))}
+              disabled={copiesOwned <= 0}
+              className="w-9 h-9 rounded-lg border bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-600 flex items-center justify-center text-xs font-bold transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              {i}
+              -
             </button>
-          ))}
-        </div>
+            <span className="min-w-[48px] text-center text-xs font-bold text-text-primary bg-slate-950 px-2 py-2 rounded-lg border border-slate-800">
+              {copiesOwned} / {entry.quantity}
+            </span>
+            <button
+              onClick={() => onOwnedChange(Math.min(entry.quantity, copiesOwned + 1))}
+              disabled={copiesOwned >= entry.quantity}
+              className="w-9 h-9 rounded-lg border bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-600 flex items-center justify-center text-xs font-bold transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              +
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -237,6 +237,7 @@ export function ImportDeck() {
               <div className="p-4 space-y-2 relative">
                 {enrichedEntries.map((card, idx) => {
                   const previewSrc = card.cardImageUri || card.imageUri;
+                  const copiesOwned = ownedCards.get(getCardKey(card)) || 0;
                   return (
                     <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 gap-3 sm:gap-4 rounded-lg bg-surface-dim border border-outline-variant/20 hover:border-outline-variant/50 transition-colors">
                       <div className="flex items-center gap-4 min-w-0">
@@ -270,10 +271,9 @@ export function ImportDeck() {
                       </div>
                       <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto mt-1 sm:mt-0 pt-3 sm:pt-0 border-t border-outline-variant/10 sm:border-t-0 flex-shrink-0">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant whitespace-nowrap">{t('importDeck.cards.ownership')}</label>
-                        <div className="flex gap-1.5 flex-wrap">
-                          {Array.from({ length: card.quantity + 1 }, (_, i) => {
-                            const copiesOwned = ownedCards.get(getCardKey(card)) || 0;
-                            return (
+                        {card.quantity <= 4 ? (
+                          <div className="flex gap-1.5 flex-wrap">
+                            {Array.from({ length: card.quantity + 1 }, (_, i) => (
                               <button
                                 key={i}
                                 onClick={() => dispatch({ type: 'SET_OWNED_CARD', cardKey: getCardKey(card), copies: i })}
@@ -285,9 +285,29 @@ export function ImportDeck() {
                               >
                                 {i}
                               </button>
-                            );
-                          })}
-                        </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="flex gap-1.5 items-center">
+                            <button
+                              onClick={() => dispatch({ type: 'SET_OWNED_CARD', cardKey: getCardKey(card), copies: Math.max(0, copiesOwned - 1) })}
+                              disabled={copiesOwned <= 0}
+                              className="w-8 h-8 rounded border bg-surface-container border-outline-variant/30 text-on-surface-variant hover:border-outline-variant/60 flex items-center justify-center text-xs font-bold transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                              -
+                            </button>
+                            <span className="min-w-[48px] text-center text-xs font-bold text-on-surface bg-surface-container-high px-2 py-1.5 rounded border border-outline-variant/20">
+                              {copiesOwned} / {card.quantity}
+                            </span>
+                            <button
+                              onClick={() => dispatch({ type: 'SET_OWNED_CARD', cardKey: getCardKey(card), copies: Math.min(card.quantity, copiesOwned + 1) })}
+                              disabled={copiesOwned >= card.quantity}
+                              className="w-8 h-8 rounded border bg-surface-container border-outline-variant/30 text-on-surface-variant hover:border-outline-variant/60 flex items-center justify-center text-xs font-bold transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                              +
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
